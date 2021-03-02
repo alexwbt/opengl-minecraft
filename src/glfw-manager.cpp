@@ -22,6 +22,7 @@ namespace glfw
         GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
         if (!window) throw std::runtime_error("Failed to create window " + title + ".");
 
+        glfwMakeContextCurrent(window);
         glfwSetKeyCallback(window, GlfwManager::KeyCallback);
         glfwSetCursorPosCallback(window, GlfwManager::MouseCallback);
         glfwSetFramebufferSizeCallback(window, GlfwManager::ResizeCallback);

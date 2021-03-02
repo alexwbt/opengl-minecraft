@@ -10,6 +10,15 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{696f03f5-a62b-4821-bef3-026f04a3da00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util">
+      <UniqueIdentifier>{514e3b05-b71d-460a-baba-ccb6cb9793f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{2c708764-ff5f-4419-a134-81332fb8f5e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Shader">
+      <UniqueIdentifier>{d2c8033f-498d-4c11-b9f4-1ce3b1f1c461}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -24,6 +33,12 @@
     <ClCompile Include="src\glfw-manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\shader.cpp">
+      <Filter>Source Files\Engine\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -34,6 +49,12 @@
     </ClInclude>
     <ClInclude Include="src\glfw-manager.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\file.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader.h">
+      <Filter>Source Files\Engine\Shader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

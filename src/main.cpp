@@ -30,6 +30,10 @@ int main()
         auto window = glfw::GlfwManager::CreateWindow(800, 600, "OpenGL Minecraft");
         glfw::GlfwManager::SetRenderHandler(window, render_handler);
 
+        // Initialize GLAD
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+            throw std::runtime_error("Failed to initialize GLAD.");
+
         constexpr int64_t kOneSecond = 1000000000;
         constexpr double kTimeStep = kOneSecond / 60.0;
         auto start_time = std::chrono::high_resolution_clock::now();
