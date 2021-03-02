@@ -2,10 +2,11 @@
 
 namespace game
 {
-    class Game
+    class Object
     {
     public:
-        engine::Camera camera;
+        Object();
+        virtual ~Object();
 
         void Update();
         void Render();

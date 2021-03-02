@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "shader.h"
 
+#include "camera.h"
+#include "object.h"
 #include "default-shader.h"
 
 namespace shader

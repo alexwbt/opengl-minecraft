@@ -174,24 +174,38 @@ namespace shader
         };
 
     public:
-        DefaultShader()
-            : Shader(vertex, fragment)
+        struct Uniforms
+        {
+            glm::vec3 camera_pos;
+            int diffuce_map;
+            float specular;
+            float shininess;
+            glm::mat4 mvp;
+            glm::mat4 model;
+        };
+
+    private:
+        std::function<Uniforms()> get_uniforms_;
+
+    public:
+        DefaultShader(std::function<Uniforms()> get_uniforms)
+            : Shader(vertex, fragment), get_uniforms_(get_uniforms)
         {}
 
-        void Use()
+        void Use() override
         {
             UseProgram();
-            //SetVec3("cameraPos", camera->position);
 
-            //SetInt("diffuseMap", 0);
-            //SetFloat("specular", 0.2f);
-            //SetFloat("shininess", 16.0f);
+            auto uniforms = get_uniforms_();
 
-            //glm::mat4 model = glm::mat4(1.0f);
-            //model = glm::translate(model, position);
+            SetVec3("cameraPos", uniforms.camera_pos);
 
-            //SetMat4("mvp", pv * model);
-            //SetMat4("model", model);
+            SetInt("diffuseMap", uniforms.diffuce_map);
+            SetFloat("specular", uniforms.specular);
+            SetFloat("shininess", uniforms.shininess);
+
+            SetMat4("mvp", uniforms.mvp);
+            SetMat4("model", uniforms.model);
         }
     };
 }
