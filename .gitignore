@@ -1,0 +1,8 @@
+.vs/
+.vscode/
+
+*.vcxproj.user
+UserMacro.props
+
+bin/
+int/

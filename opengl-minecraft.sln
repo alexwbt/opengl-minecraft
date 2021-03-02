@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opengl-minecraft", "opengl-minecraft.vcxproj", "{E225793C-6705-44EA-A1DE-DD73AE726304}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E225793C-6705-44EA-A1DE-DD73AE726304}.Debug|x64.ActiveCfg = Debug|x64
+		{E225793C-6705-44EA-A1DE-DD73AE726304}.Debug|x64.Build.0 = Debug|x64
+		{E225793C-6705-44EA-A1DE-DD73AE726304}.Release|x64.ActiveCfg = Debug|x64
+		{E225793C-6705-44EA-A1DE-DD73AE726304}.Release|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE4D17DD-5A1B-4D76-BC87-69E919F539FC}
+	EndGlobalSection
+EndGlobal
