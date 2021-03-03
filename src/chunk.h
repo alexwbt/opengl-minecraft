@@ -64,8 +64,8 @@ namespace game
 
         std::shared_ptr<shader::BasicLightingShader> shader_;
 
-        Chunk(std::shared_ptr<shader::BasicLightingShader> shader)
-            : shader_(shader)
+        Chunk(uint32_t id, std::shared_ptr<shader::BasicLightingShader> shader)
+            : Object(id), shader_(shader)
         {
             RandomData();
             GenerateMesh();

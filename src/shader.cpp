@@ -24,6 +24,7 @@ namespace shader
             std::cout << log << std::endl;
             throw std::runtime_error("Failed to compile shader.");
         }
+        return id;
     }
 
     Shader::Shader(const char* vertex, const char* fragment)
