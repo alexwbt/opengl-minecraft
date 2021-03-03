@@ -2,6 +2,8 @@
 #include "game.h"
 #include "camera.h"
 
+//#include "object.h"
+
 namespace game
 {
     void Game::Update()

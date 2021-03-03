@@ -39,9 +39,6 @@
     <ClCompile Include="src\object.cpp">
       <Filter>Source Files\Game\Object</Filter>
     </ClCompile>
-    <ClCompile Include="src\mesh.cpp">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -56,9 +53,6 @@
     <ClInclude Include="src\shader.h">
       <Filter>Source Files\GL\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="src\default-shader.h">
-      <Filter>Source Files\GL\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\object.h">
       <Filter>Source Files\Game\Object</Filter>
     </ClInclude>
@@ -67,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="src\camera.h">
       <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\chunk.h">
+      <Filter>Source Files\Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\basic-lighting-shader.h">
+      <Filter>Source Files\GL\Shader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

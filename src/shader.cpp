@@ -3,7 +3,7 @@
 
 #include "camera.h"
 #include "object.h"
-#include "default-shader.h"
+#include "basic-lighting-shader.h"
 
 namespace shader
 {

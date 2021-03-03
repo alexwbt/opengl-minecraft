@@ -1,13 +1,10 @@
 #include "pch.h"
+
 #include "object.h"
+#include "chunk.h"
 
 namespace game
 {
-    void Object::SetShader(std::shared_ptr<shader::Shader> shader)
-    {
-        shader_ = std::move(shader);
-    }
-
     void Object::SetMesh(std::shared_ptr<gl::Mesh> mesh)
     {
         mesh_ = std::move(mesh);
@@ -20,10 +17,7 @@ namespace game
 
     void Object::Render()
     {
-        if (!mesh_ || !shader_)
-            return;
-
-        shader_->Use();
+        if (!mesh_) return;
         mesh_->Render();
     }
 }

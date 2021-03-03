@@ -4,13 +4,19 @@ namespace shader
 {
     class Shader
     {
+    public:
+        struct Uniforms {
+            virtual ~Uniforms() {}
+        };
+
     private:
         GLuint program_id_;
 
     public:
         Shader(const char* vertex, const char* fragment);
 
-        virtual void Use() = 0;
+        virtual void Use(Uniforms* uniforms) = 0;
+        virtual void EnableAttributes() = 0;
 
     protected:
         void SetBool(const std::string& name, bool value) const;
