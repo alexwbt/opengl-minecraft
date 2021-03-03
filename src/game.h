@@ -5,7 +5,7 @@ namespace game
     class Game
     {
     public:
-        engine::Camera camera;
+        gl::Camera camera;
 
         void Update();
         void Render();

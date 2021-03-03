@@ -185,10 +185,10 @@ namespace shader
         };
 
     private:
-        std::function<Uniforms()> get_uniforms_;
+        std::function<Uniforms&()> get_uniforms_;
 
     public:
-        DefaultShader(std::function<Uniforms()> get_uniforms)
+        DefaultShader(std::function<Uniforms&()> get_uniforms)
             : Shader(vertex, fragment), get_uniforms_(get_uniforms)
         {}
 
@@ -196,7 +196,7 @@ namespace shader
         {
             UseProgram();
 
-            auto uniforms = get_uniforms_();
+            auto& uniforms = get_uniforms_();
 
             SetVec3("cameraPos", uniforms.camera_pos);
 

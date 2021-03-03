@@ -1,21 +1,20 @@
 #pragma once
 
-namespace engine
+namespace gl
 {
     struct Camera
     {
-		float yaw, pitch, fov;
-		glm::vec3 position, front, right, up;
+		float yaw = -90.0f;
+		float pitch = 0.0f;
+		float fov = 80.0f;
+		glm::vec3 position = glm::vec3(0);
+
+		glm::vec3 front, right, up;
 		glm::mat4 view_matrix;
 
 		Camera()
 		{
-			position = glm::vec3(0);
-
-			yaw = -90.0f;
-			pitch = 0.0f;
-
-			fov = 80.0f;
+			Update();
 		}
 
 		void Update()

@@ -4,19 +4,16 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{ece55fdd-14d9-4620-9dc7-f91843471c3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{17ba187b-881e-4fef-a4aa-21e15b6d1c07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{696f03f5-a62b-4821-bef3-026f04a3da00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Util">
-      <UniqueIdentifier>{514e3b05-b71d-460a-baba-ccb6cb9793f0}</UniqueIdentifier>
+    <Filter Include="Source Files\Game\Object">
+      <UniqueIdentifier>{5cfa7672-eb0c-49c5-8fd3-2bd92d9edd98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine">
+    <Filter Include="Source Files\GL">
       <UniqueIdentifier>{2c708764-ff5f-4419-a134-81332fb8f5e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Shader">
+    <Filter Include="Source Files\GL\Shader">
       <UniqueIdentifier>{d2c8033f-498d-4c11-b9f4-1ce3b1f1c461}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -34,10 +31,16 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\shader.cpp">
-      <Filter>Source Files\Engine\Shader</Filter>
+      <Filter>Source Files\GL\Shader</Filter>
     </ClCompile>
     <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object.cpp">
+      <Filter>Source Files\Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh.cpp">
+      <Filter>Source Files\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,11 +53,20 @@
     <ClInclude Include="src\glfw-manager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\file.h">
-      <Filter>Source Files\Util</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader.h">
-      <Filter>Source Files\Engine\Shader</Filter>
+      <Filter>Source Files\GL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\default-shader.h">
+      <Filter>Source Files\GL\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object.h">
+      <Filter>Source Files\Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesh.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera.h">
+      <Filter>Source Files\GL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
