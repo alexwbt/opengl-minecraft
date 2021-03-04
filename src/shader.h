@@ -1,6 +1,6 @@
 #pragma once
 
-namespace shader
+namespace gl
 {
     class Shader
     {
@@ -14,6 +14,7 @@ namespace shader
 
     public:
         Shader(const char* vertex, const char* fragment);
+        virtual ~Shader();
 
         virtual void Use(Uniforms* uniforms) = 0;
         virtual void EnableAttributes() = 0;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mesh.h"
+#include "model.h"
 #include "basic-lighting-shader.h"
 
 constexpr float cube[] = {
@@ -58,30 +58,56 @@ namespace game
 {
     class Chunk : public Object
     {
-        static constexpr int kSize = 8;
+        static constexpr int kSize = 2;
 
         int data[kSize][kSize][kSize]{};
 
-        std::shared_ptr<shader::BasicLightingShader> shader_;
+        std::shared_ptr<gl::BasicLightingShader> shader_;
+        std::shared_ptr<gl::Texture> texture_;
 
-        Chunk(uint32_t id, std::shared_ptr<shader::BasicLightingShader> shader)
-            : Object(id), shader_(shader)
+    public:
+        Chunk(std::shared_ptr<Game> game, std::shared_ptr<gl::BasicLightingShader> shader, std::shared_ptr<gl::Texture> texture)
+            : Object(std::move(game)), shader_(std::move(shader)), texture_(texture)
         {
             RandomData();
-            GenerateMesh();
+            GenerateModel();
         }
 
+        void Render(const RenderInfo& info) override
+        {
+            if (model_)
+            {
+                glm::mat4 model_matrix = glm::mat4(1.0f);
+                model_matrix = glm::translate(model_matrix, position);
+
+                auto lights = game_->GetLights();
+                auto pos = game_->GetCamera().position;
+
+                gl::BasicLightingShader::Uniforms uniforms;
+                uniforms.lights = lights;
+                uniforms.camera_pos = pos;
+                uniforms.diffuse_map = 0;
+                uniforms.specular = 0.2f;
+                uniforms.shininess = 16.0f;
+                uniforms.mvp = info.pv * model_matrix;
+                uniforms.model = model_matrix;
+                model_->Render(&uniforms);
+            }
+        }
+
+    private:
         void RandomData()
         {
             for (int x = 0; x < kSize; x++)
                 for (int y = 0; y < kSize; y++)
                     for (int z = 0; z < kSize; z++)
                         data[x][y][z] = (int)(rand() % 4) - 1;
+                        //data[x][y][z] = 0;
         }
 
-        void GenerateMesh()
+        void GenerateModel()
         {
-            std::vector<shader::BasicLightingShader::Vertex> vertices;
+            std::vector<gl::BasicLightingShader::Vertex> vertices;
             for (int x = 0; x < kSize; x++)
             {
                 for (int y = 0; y < kSize; y++)
@@ -102,21 +128,15 @@ namespace game
                                 int tx = textures[data[x][y][z]][f] % 10;
                                 int ty = textures[data[x][y][z]][f] / 10;
                                 vertices.push_back({
-                                    glm::vec3(x + cube[i * 8],
-                                    y + cube[i * 8 + 1],
-                                    z + cube[i * 8 + 2]),
-                                    glm::vec3(cube[i * 8 + 3],
-                                    cube[i * 8 + 4],
-                                    cube[i * 8 + 5]),
-                                    glm::vec2((tx + cube[i * 8 + 6]) * 0.1f,
-                                    (ty + cube[i * 8 + 7]) * 0.1f) });
+                                    glm::vec3(x + cube[i * 8], y + cube[i * 8 + 1], z + cube[i * 8 + 2]),
+                                    glm::vec3(cube[i * 8 + 3], cube[i * 8 + 4], cube[i * 8 + 5]),
+                                    glm::vec2((tx + cube[i * 8 + 6]) * 0.1f, (ty + cube[i * 8 + 7]) * 0.1f) });
                             }
                         }
                     }
                 }
             }
-
-            SetMesh(std::make_shared<gl::Mesh>(shader_, vertices));
+            SetModel(std::make_shared<gl::Model>(vertices, shader_, texture_));
         }
     };
 }

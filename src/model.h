@@ -1,10 +1,11 @@
 #pragma once
 
 #include "shader.h"
+#include "texture.h"
 
 namespace gl
 {
-	class Mesh
+	class Model
 	{
 	private:
 		enum class Type
@@ -13,7 +14,8 @@ namespace gl
 			kElement
 		};
 
-		std::shared_ptr<shader::Shader> shader_;
+		std::shared_ptr<gl::Shader> shader_;
+		std::shared_ptr<gl::Texture> texture_;
 
 		Type type_;
 
@@ -26,24 +28,33 @@ namespace gl
 
 	public:
 		template <typename Shader>
-		Mesh(std::shared_ptr<Shader> shader, const std::vector<typename Shader::Vertex> vertices)
-			: shader_(std::move(shader)), type_(Type::kVertex), vertices_size_((GLsizei)vertices.size())
+		Model(
+			const std::vector<typename Shader::Vertex> vertices,
+			std::shared_ptr<Shader> shader,
+			std::shared_ptr<Texture> texture
+		) :
+			type_(Type::kVertex),
+			vertices_size_((GLsizei)vertices.size()),
+			shader_(std::move(shader)),
+			texture_(std::move(texture))
 		{
+			std::cout << vertices_size_ << std::endl;
+
 			glGenVertexArrays(1, &vao_id_);
 			glGenBuffers(1, &vbo_id_);
 
 			glBindVertexArray(vao_id_);
 
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertices_size_ * sizeof(typename Shader::Vertex), vertices.data(), GL_STATIC_DRAW);
 
 			shader_->EnableAttributes();
 
 			glBindVertexArray(0);
 		}
 
-		template <typename Shader>
-		Mesh(std::shared_ptr<Shader> shader, const std::vector<typename Shader::Vertex> vertices, const std::vector<uint32_t> indices)
+		/*template <typename Shader>
+		Model(std::shared_ptr<Shader> shader, const std::vector<typename Shader::Vertex> vertices, const std::vector<uint32_t> indices)
 			: shader_(shader), type_(Type::kElement), vertices_size_((GLsizei)vertices.size()), indices_size_((GLsizei)indices.size())
 		{
 			glGenVertexArrays(1, &vao_id_);
@@ -58,21 +69,22 @@ namespace gl
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id_);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-			Shader::EnableAttributes();
+			shader_->EnableAttributes();
 
 			glBindVertexArray(0);
-		}
+		}*/
 
-		~Mesh()
+		~Model()
 		{
 			if (vao_id_ > 0) glDeleteVertexArrays(1, &vao_id_);
 			if (vbo_id_ > 0) glDeleteBuffers(1, &vbo_id_);
 			if (ebo_id_ > 0) glDeleteBuffers(1, &ebo_id_);
 		}
 
-		void Render(shader::Shader::Uniforms* uniforms)
+		void Render(gl::Shader::Uniforms* uniforms)
 		{
 			shader_->Use(uniforms);
+			texture_->Use();
 
 			glBindVertexArray(vao_id_);
 			switch (type_)

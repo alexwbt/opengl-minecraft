@@ -1,28 +1,42 @@
 #pragma once
 
-#include "mesh.h"
-
 namespace game
 {
+    class Game;
+
     class Object
     {
-    private:
+    protected:
+        std::shared_ptr<Game> game_;
+
         uint32_t id_;
 
-        std::shared_ptr<gl::Mesh> mesh_ = nullptr;
+        std::shared_ptr<gl::Model> model_ = nullptr;
 
         glm::vec3 position;
 
 
     public:
-        Object(uint32_t id);
+        Object(std::shared_ptr<Game> game)
+            : game_(std::move(game))
+        {
+
+        }
+
         virtual ~Object() {}
 
         uint32_t id() const { return id_; }
 
-        void SetMesh(std::shared_ptr<gl::Mesh> mesh);
+        void SetModel(std::shared_ptr<gl::Model> model)
+        {
+            model_ = std::move(model);
+        }
 
-        void Update();
-        void Render();
+        virtual void Update()
+        {
+
+        }
+
+        virtual void Render(const RenderInfo& info) = 0;
     };
 }

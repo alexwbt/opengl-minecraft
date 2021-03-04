@@ -2,7 +2,7 @@
 
 #include "light.h"
 
-namespace shader
+namespace gl
 {
     class BasicLightingShader : public Shader
     {
@@ -180,7 +180,7 @@ namespace shader
         {
             std::vector<std::shared_ptr<gl::Light>> lights;
             glm::vec3 camera_pos;
-            int diffuce_map;
+            int diffuse_map;
             float specular;
             float shininess;
             glm::mat4 mvp;
@@ -208,7 +208,7 @@ namespace shader
             int sizes[3] = { 0, 0, 0 };
             for (auto& light : data->lights)
             {
-                int type = (int)light->type;
+                int type = (int)(light->type);
                 UseLight(std::move(light), sizes[type]);
                 sizes[type]++;
             }
@@ -218,7 +218,7 @@ namespace shader
 
             SetVec3("cameraPos", data->camera_pos);
 
-            SetInt("diffuseMap", data->diffuce_map);
+            SetInt("diffuseMap", data->diffuse_map);
             SetFloat("specular", data->specular);
             SetFloat("shininess", data->shininess);
 

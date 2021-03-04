@@ -1,11 +1,9 @@
 #include "pch.h"
 #include "shader.h"
 
-#include "camera.h"
-#include "object.h"
 #include "basic-lighting-shader.h"
 
-namespace shader
+namespace gl
 {
     GLuint CreateShader(const char* code, GLenum type)
     {
@@ -51,6 +49,11 @@ namespace shader
 
         glDeleteShader(vertex_shader);
         glDeleteShader(fragment_shader);
+    }
+
+    Shader::~Shader()
+    {
+        glDeleteProgram(program_id_);
     }
 
     void Shader::SetBool  (const std::string& name, bool value)                         const { glUniform1i(glGetUniformLocation(program_id_, name.c_str()), (int)value); }
