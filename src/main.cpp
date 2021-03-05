@@ -1,6 +1,5 @@
 #include "pch.h"
 
-#include "glfw-manager.h"
 #include "game.h"
 #include "chunk.h"
 
@@ -17,7 +16,7 @@ struct Handler : public glfw::GlfwRenderHandler, public glfw::GlfwListener
 
     void MouseMove(double x, double y) override
     {
-        game.UpdateMouse((float)x, (float)y);
+        game.GetCameraControl().UpdateMouse((float)x, (float)y);
     }
 
     void Render()
@@ -47,13 +46,23 @@ int main()
             throw std::runtime_error("Failed to initialize GLAD.");
 
         auto basic_lighting_shader = std::make_shared<gl::BasicLightingShader>();
-        auto chunk_texture = std::make_shared<gl::Texture>("res/chunk.png", GL_TEXTURE_2D, GL_RGB);
+        auto chunk_texture = gl::Texture::Load2DTexture("res/textures/chunk.png");
         auto chunk = std::make_shared<game::Chunk>(game, basic_lighting_shader, chunk_texture);
         game->Spawn(chunk);
 
         gl::LightColor light_color{ glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f) };
         auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
         game->AddLight(light);
+
+        std::vector<std::string> skybox_paths{
+            "res/textures/skybox/right.jpg",
+            "res/textures/skybox/left.jpg",
+            "res/textures/skybox/top.jpg",
+            "res/textures/skybox/bottom.jpg",
+            "res/textures/skybox/front.jpg",
+            "res/textures/skybox/back.jpg"
+        };
+        auto skybox = gl::Texture::LoadCubemapTexture(skybox_paths);
 
         glEnable(GL_CULL_FACE);
         glFrontFace(GL_CCW);
@@ -79,7 +88,7 @@ int main()
             bool should_update = delta_time >= 1;
             while (delta_time >= 1)
             {
-                game->UpdateControls({
+                game->GetCameraControl().UpdateControls({
                     glfwGetKey(glfw_window, GLFW_KEY_W) == GLFW_PRESS,
                     glfwGetKey(glfw_window, GLFW_KEY_S) == GLFW_PRESS,
                     glfwGetKey(glfw_window, GLFW_KEY_D) == GLFW_PRESS,
@@ -96,7 +105,8 @@ int main()
 
             if (std::chrono::duration_cast<std::chrono::nanoseconds>(now - update_timer).count() >= kOneSecond)
             {
-                std::cout << "updated: " << update_counter << std::endl;
+                std::string title = "OpenGL Minecraft | ups: " + std::to_string(update_counter);
+                glfwSetWindowTitle(glfw_window, title.c_str());
                 update_counter = 0;
                 update_timer = now;
             }

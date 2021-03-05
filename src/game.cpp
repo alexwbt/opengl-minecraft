@@ -4,7 +4,7 @@
 namespace game
 {
     Game::Game()
-        : CameraControl(camera_, 0.1f, 0.1f)
+        : camera_(0.1f, 0.1f)
     {}
 
     void Game::Update()

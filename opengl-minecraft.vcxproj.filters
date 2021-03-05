@@ -19,6 +19,9 @@
     <Filter Include="Source Files\GL\Texture">
       <UniqueIdentifier>{aa6cd0b8-32b0-4b8c-9da5-8c09bea67b39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util">
+      <UniqueIdentifier>{1adc8297-7dce-4aa3-89d9-507f29131fab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -41,6 +44,15 @@
     </ClCompile>
     <ClCompile Include="src\texture.cpp">
       <Filter>Source Files\GL\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\basic-lighting-shader.cpp">
+      <Filter>Source Files\GL\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\chunk.cpp">
+      <Filter>Source Files\Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object.cpp">
+      <Filter>Source Files\Game\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,17 +86,14 @@
     <ClInclude Include="src\render-info.h">
       <Filter>Source Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\camera-control.h">
-      <Filter>Source Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="src\texture.h">
       <Filter>Source Files\GL\Texture</Filter>
     </ClInclude>
     <ClInclude Include="src\model.h">
       <Filter>Source Files\GL</Filter>
     </ClInclude>
-    <ClInclude Include="src\cubemap.h">
-      <Filter>Source Files\GL\Texture</Filter>
+    <ClInclude Include="src\file.h">
+      <Filter>Source Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

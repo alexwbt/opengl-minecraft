@@ -4,8 +4,9 @@ namespace gl
 {
     class Texture
     {
-    private:
-        static uint32_t LoadTexture(const std::string& path, GLint format);
+    public:
+        static std::shared_ptr<Texture> Load2DTexture(const std::string& path);
+        static std::shared_ptr<Texture> LoadCubemapTexture(std::vector<std::string>& paths);
 
     private:
         uint32_t id_;
@@ -13,7 +14,7 @@ namespace gl
         GLenum type_;
 
     public:
-        Texture(const std::string& path, GLenum type, GLint format);
+        Texture(uint32_t id, GLenum type);
         ~Texture();
 
         void Use();

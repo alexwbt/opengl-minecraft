@@ -96,6 +96,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\basic-lighting-shader.cpp" />
+    <ClCompile Include="src\chunk.cpp" />
+    <ClCompile Include="src\object.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -113,11 +116,10 @@
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\camera-control.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\chunk.h" />
     <ClInclude Include="src\basic-lighting-shader.h" />
-    <ClInclude Include="src\cubemap.h" />
+    <ClInclude Include="src\file.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\glfw-manager.h" />
     <ClInclude Include="src\light.h" />

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "light.h"
+
 namespace gl
 {
     class Shader
@@ -13,7 +15,7 @@ namespace gl
         GLuint program_id_;
 
     public:
-        Shader(const char* vertex, const char* fragment);
+        Shader(const std::string& vertex, const std::string& fragment);
         virtual ~Shader();
 
         virtual void Use(Uniforms* uniforms) = 0;
@@ -32,6 +34,8 @@ namespace gl
         void SetMat2(const std::string& name, const glm::mat2& value) const;
         void SetMat3(const std::string& name, const glm::mat3& value) const;
         void SetMat4(const std::string& name, const glm::mat4& value) const;
+
+        void UseLight(std::shared_ptr<gl::Light> light, int i);
 
         void UseProgram();
     };

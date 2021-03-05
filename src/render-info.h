@@ -1,5 +1,7 @@
 #pragma once
 
+#include "camera.h"
+
 namespace game
 {
     struct RenderInfo
