@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "game.h"
 
+// gl
 #include "model.h"
 #include "basic-lighting-shader.h"
 
+// game
 #include "object.h"
 #include "chunk.h"
+#include "skybox.h"
 
 namespace game
 {

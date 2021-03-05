@@ -99,7 +99,6 @@ namespace game
                 for (int y = 0; y < kSize; y++)
                     for (int z = 0; z < kSize; z++)
                         data[x][y][z] = rand() % 4 - 1;
-            //data[x][y][z] = 0;
         }
 
         void GenerateModel()
