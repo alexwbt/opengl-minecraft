@@ -55,9 +55,9 @@ int main()
         auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
         game->AddLight(light);
 
-        //glEnable(GL_CULL_FACE);
-        //glFrontFace(GL_CCW);
-        //glCullFace(GL_FRONT);
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        glCullFace(GL_FRONT);
 
         glEnable(GL_DEPTH_TEST);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

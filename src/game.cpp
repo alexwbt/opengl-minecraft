@@ -9,6 +9,7 @@ namespace game
 
     void Game::Update()
     {
+        camera_.Update();
         for (auto& object : objects_)
             object->Update();
     }

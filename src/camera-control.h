@@ -46,8 +46,6 @@ namespace gl
 				camera_.pitch = 89.0f;
 			if (camera_.pitch < -89.0f)
 				camera_.pitch = -89.0f;
-
-			camera_.Update();
 		}
 	};
 }

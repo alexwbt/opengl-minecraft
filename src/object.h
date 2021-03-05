@@ -13,12 +13,11 @@ namespace game
 
         std::shared_ptr<gl::Model> model_ = nullptr;
 
-        glm::vec3 position;
-
+        glm::vec3 position_;
 
     public:
         Object(std::shared_ptr<Game> game)
-            : game_(std::move(game))
+            : game_(std::move(game)), id_(0), position_(0)
         {
 
         }

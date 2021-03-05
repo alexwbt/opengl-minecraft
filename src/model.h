@@ -38,8 +38,6 @@ namespace gl
 			shader_(std::move(shader)),
 			texture_(std::move(texture))
 		{
-			std::cout << vertices_size_ << std::endl;
-
 			glGenVertexArrays(1, &vao_id_);
 			glGenBuffers(1, &vbo_id_);
 

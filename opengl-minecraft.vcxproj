@@ -117,6 +117,7 @@
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\chunk.h" />
     <ClInclude Include="src\basic-lighting-shader.h" />
+    <ClInclude Include="src\cubemap.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\glfw-manager.h" />
     <ClInclude Include="src\light.h" />

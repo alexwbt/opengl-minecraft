@@ -83,5 +83,8 @@
     <ClInclude Include="src\model.h">
       <Filter>Source Files\GL</Filter>
     </ClInclude>
+    <ClInclude Include="src\cubemap.h">
+      <Filter>Source Files\GL\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

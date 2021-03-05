@@ -3,7 +3,7 @@
 #include "model.h"
 #include "basic-lighting-shader.h"
 
-constexpr float cube[] = {
+static constexpr float cube[] = {
     // Back face
     -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f, // Bottom-left
      0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, // bottom-right
@@ -48,7 +48,7 @@ constexpr float cube[] = {
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f  // top-left
 };
 
-constexpr int textures[3][6] = {
+static constexpr int textures[3][6] = {
     { 0, 0, 0, 0, 0, 0 },
     { 1, 1, 1, 1, 1, 1 },
     { 3, 3, 3, 3, 1, 2 }
@@ -58,7 +58,7 @@ namespace game
 {
     class Chunk : public Object
     {
-        static constexpr int kSize = 2;
+        static constexpr int kSize = 8;
 
         int data[kSize][kSize][kSize]{};
 
@@ -78,7 +78,7 @@ namespace game
             if (model_)
             {
                 glm::mat4 model_matrix = glm::mat4(1.0f);
-                model_matrix = glm::translate(model_matrix, position);
+                model_matrix = glm::translate(model_matrix, position_);
 
                 auto lights = game_->GetLights();
                 auto pos = game_->GetCamera().position;
@@ -101,7 +101,7 @@ namespace game
             for (int x = 0; x < kSize; x++)
                 for (int y = 0; y < kSize; y++)
                     for (int z = 0; z < kSize; z++)
-                        data[x][y][z] = (int)(rand() % 4) - 1;
+                        data[x][y][z] = rand() % 4 - 1;
                         //data[x][y][z] = 0;
         }
 
@@ -121,16 +121,24 @@ namespace game
                             int iy = y + (int)cube[f * 6 * 8 + 4];
                             int iz = z + (int)cube[f * 6 * 8 + 5];
                             bool oob = ix < 0 || ix >= kSize || iy < 0 || iy >= kSize || iz < 0 || iz >= kSize;
-                            if (!oob && (oob || data[ix][iy][iz] < 0)) continue;
+                            if (!oob && (oob || data[ix][iy][iz] >= 0)) continue;
                             for (int v = 0; v < 6; v++)
                             {
                                 int i = f * 6 + v;
                                 int tx = textures[data[x][y][z]][f] % 10;
                                 int ty = textures[data[x][y][z]][f] / 10;
-                                vertices.push_back({
-                                    glm::vec3(x + cube[i * 8], y + cube[i * 8 + 1], z + cube[i * 8 + 2]),
-                                    glm::vec3(cube[i * 8 + 3], cube[i * 8 + 4], cube[i * 8 + 5]),
-                                    glm::vec2((tx + cube[i * 8 + 6]) * 0.1f, (ty + cube[i * 8 + 7]) * 0.1f) });
+                                vertices.push_back({ {
+                                        x + cube[i * 8],
+                                        y + cube[i * 8 + 1],
+                                        z + cube[i * 8 + 2]
+                                    }, {
+                                        cube[i * 8 + 3],
+                                        cube[i * 8 + 4],
+                                        cube[i * 8 + 5]
+                                    }, {
+                                        (tx + cube[i * 8 + 6]) * 0.1f,
+                                        (ty + cube[i * 8 + 7]) * 0.1f
+                                    } });
                             }
                         }
                     }
