@@ -1,11 +1,12 @@
 #pragma once
 
-#include "glfw-manager.h"
-
-#include "object.h"
+#include "camera.h"
+#include "light.h"
 
 namespace game
 {
+    class Object;
+
     class Game
     {
         gl::CameraControl camera_;
@@ -16,8 +17,10 @@ namespace game
     public:
         Game();
 
+        void Init();
+
         void Update();
-        void Render(glfw::Dimension dimension);
+        void Render(float width, float height);
 
         void AddLight(std::shared_ptr<gl::Light> light);
         void Spawn(std::shared_ptr<Object> object);

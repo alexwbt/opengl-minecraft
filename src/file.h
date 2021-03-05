@@ -2,7 +2,7 @@
 
 namespace util
 {
-    std::string ReadTextFile(const std::string& path)
+    inline std::string ReadTextFile(const std::string& path)
     {
         std::ifstream file(path, std::ifstream::in);
         std::stringstream output;

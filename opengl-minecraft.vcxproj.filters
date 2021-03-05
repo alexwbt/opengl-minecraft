@@ -48,12 +48,6 @@
     <ClCompile Include="src\basic-lighting-shader.cpp">
       <Filter>Source Files\GL\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\chunk.cpp">
-      <Filter>Source Files\Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="src\object.cpp">
-      <Filter>Source Files\Game\Object</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -82,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="src\light.h">
       <Filter>Source Files\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\render-info.h">
-      <Filter>Source Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="src\texture.h">
       <Filter>Source Files\GL\Texture</Filter>

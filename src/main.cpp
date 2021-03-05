@@ -1,7 +1,8 @@
 #include "pch.h"
 
+#include "glfw-manager.h"
+
 #include "game.h"
-#include "chunk.h"
 
 struct Handler : public glfw::GlfwRenderHandler, public glfw::GlfwListener
 {
@@ -23,7 +24,9 @@ struct Handler : public glfw::GlfwRenderHandler, public glfw::GlfwListener
     {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        game.Render(glfw::GlfwManager::GetWindowSize(window));
+
+        auto dimension = glfw::GlfwManager::GetWindowSize(window);
+        game.Render((float)dimension.width, (float)dimension.height);
     }
 };
 
@@ -45,24 +48,7 @@ int main()
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             throw std::runtime_error("Failed to initialize GLAD.");
 
-        auto basic_lighting_shader = std::make_shared<gl::BasicLightingShader>();
-        auto chunk_texture = gl::Texture::Load2DTexture("res/textures/chunk.png");
-        auto chunk = std::make_shared<game::Chunk>(game, basic_lighting_shader, chunk_texture);
-        game->Spawn(chunk);
-
-        gl::LightColor light_color{ glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f) };
-        auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
-        game->AddLight(light);
-
-        std::vector<std::string> skybox_paths{
-            "res/textures/skybox/right.jpg",
-            "res/textures/skybox/left.jpg",
-            "res/textures/skybox/top.jpg",
-            "res/textures/skybox/bottom.jpg",
-            "res/textures/skybox/front.jpg",
-            "res/textures/skybox/back.jpg"
-        };
-        auto skybox = gl::Texture::LoadCubemapTexture(skybox_paths);
+        game->Init();
 
         glEnable(GL_CULL_FACE);
         glFrontFace(GL_CCW);
