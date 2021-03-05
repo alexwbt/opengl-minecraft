@@ -2,9 +2,9 @@
 
 #include "shader.h"
 
-namespace gl
+namespace game
 {
-    class BasicLightingShader : public Shader
+    class BasicLightingShader : public gl::Shader
     {
     public:
         struct Uniforms : public Shader::Uniforms

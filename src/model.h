@@ -14,8 +14,8 @@ namespace gl
 			kElement
 		};
 
-		std::shared_ptr<gl::Shader> shader_;
-		std::shared_ptr<gl::Texture> texture_;
+		std::shared_ptr<Shader> shader_;
+		std::shared_ptr<Texture> texture_;
 
 		Type type_;
 
@@ -27,10 +27,10 @@ namespace gl
 		GLsizei indices_size_ = 0;
 
 	public:
-		template <typename Shader>
+		template <typename ShaderType>
 		Model(
-			const std::vector<typename Shader::Vertex> vertices,
-			std::shared_ptr<Shader> shader,
+			const std::vector<typename ShaderType::Vertex> vertices,
+			std::shared_ptr<ShaderType> shader,
 			std::shared_ptr<Texture> texture
 		) :
 			type_(Type::kVertex),
@@ -44,7 +44,7 @@ namespace gl
 			glBindVertexArray(vao_id_);
 
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
-			glBufferData(GL_ARRAY_BUFFER, vertices_size_ * sizeof(typename Shader::Vertex), vertices.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertices_size_ * sizeof(typename ShaderType::Vertex), vertices.data(), GL_STATIC_DRAW);
 
 			shader_->EnableAttributes();
 
@@ -58,7 +58,7 @@ namespace gl
 			if (ebo_id_ > 0) glDeleteBuffers(1, &ebo_id_);
 		}
 
-		void Render(gl::Shader::Uniforms* uniforms)
+		void Render(Shader::Uniforms* uniforms)
 		{
 			shader_->Use(uniforms);
 			texture_->Use();

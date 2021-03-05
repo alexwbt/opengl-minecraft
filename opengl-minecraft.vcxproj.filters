@@ -13,14 +13,11 @@
     <Filter Include="Source Files\GL">
       <UniqueIdentifier>{2c708764-ff5f-4419-a134-81332fb8f5e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GL\Shader">
-      <UniqueIdentifier>{d2c8033f-498d-4c11-b9f4-1ce3b1f1c461}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GL\Texture">
-      <UniqueIdentifier>{aa6cd0b8-32b0-4b8c-9da5-8c09bea67b39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Util">
       <UniqueIdentifier>{1adc8297-7dce-4aa3-89d9-507f29131fab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Shaders">
+      <UniqueIdentifier>{91197a1b-cede-4892-aebf-8704fa53039b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,17 +33,20 @@
     <ClCompile Include="src\glfw-manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader.cpp">
-      <Filter>Source Files\GL\Shader</Filter>
-    </ClCompile>
     <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\texture.cpp">
-      <Filter>Source Files\GL\Texture</Filter>
-    </ClCompile>
     <ClCompile Include="src\basic-lighting-shader.cpp">
-      <Filter>Source Files\GL\Shader</Filter>
+      <Filter>Source Files\Game\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\skybox-shader.cpp">
+      <Filter>Source Files\Game\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +59,6 @@
     <ClInclude Include="src\glfw-manager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader.h">
-      <Filter>Source Files\GL\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\object.h">
       <Filter>Source Files\Game\Object</Filter>
     </ClInclude>
@@ -71,20 +68,29 @@
     <ClInclude Include="src\chunk.h">
       <Filter>Source Files\Game\Object</Filter>
     </ClInclude>
-    <ClInclude Include="src\basic-lighting-shader.h">
-      <Filter>Source Files\GL\Shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\light.h">
       <Filter>Source Files\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\texture.h">
-      <Filter>Source Files\GL\Texture</Filter>
     </ClInclude>
     <ClInclude Include="src\model.h">
       <Filter>Source Files\GL</Filter>
     </ClInclude>
     <ClInclude Include="src\file.h">
       <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\basic-lighting-shader.h">
+      <Filter>Source Files\Game\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture.h">
+      <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\skybox-shader.h">
+      <Filter>Source Files\Game\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\skybox.h">
+      <Filter>Source Files\Game\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

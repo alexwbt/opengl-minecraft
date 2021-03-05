@@ -10,6 +10,9 @@ namespace gl
         struct Uniforms {
             virtual ~Uniforms() {}
         };
+        struct Vertex {
+            virtual ~Vertex() {}
+        };
 
     private:
         GLuint program_id_;

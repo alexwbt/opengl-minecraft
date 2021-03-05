@@ -2,6 +2,8 @@
 
 #include "camera.h"
 #include "light.h"
+#include "shader.h"
+#include "texture.h"
 
 namespace game
 {
@@ -9,6 +11,17 @@ namespace game
 
     class Game
     {
+    private:
+        static std::map<std::string, std::shared_ptr<gl::Texture>> textures;
+        static std::map<std::string, std::shared_ptr<gl::Shader>> shaders;
+
+    public:
+        static void InitShaders();
+        static void InitTextures();
+        static std::shared_ptr<gl::Shader> GetShader(const std::string& name);
+        static std::shared_ptr<gl::Texture> GetTexture(const std::string& name);
+
+    private:
         gl::CameraControl camera_;
 
         std::list<std::shared_ptr<gl::Light>> lights_;

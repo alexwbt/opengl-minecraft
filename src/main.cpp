@@ -48,6 +48,8 @@ int main()
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             throw std::runtime_error("Failed to initialize GLAD.");
 
+        game::Game::InitTextures();
+        game::Game::InitShaders();
         game->Init();
 
         glEnable(GL_CULL_FACE);

@@ -59,12 +59,8 @@ namespace game
 
         int data[kSize][kSize][kSize]{};
 
-        std::shared_ptr<gl::BasicLightingShader> shader_;
-        std::shared_ptr<gl::Texture> texture_;
-
     public:
-        Chunk(Game* game, std::shared_ptr<gl::BasicLightingShader> shader, std::shared_ptr<gl::Texture> texture)
-            : Object(game), shader_(std::move(shader)), texture_(texture)
+        Chunk(Game* game) : Object(game)
         {
             RandomData();
             GenerateModel();
@@ -80,7 +76,7 @@ namespace game
                 auto lights = game_->GetLights();
                 auto pos = game_->camera().position;
 
-                gl::BasicLightingShader::Uniforms uniforms;
+                BasicLightingShader::Uniforms uniforms;
                 uniforms.lights = lights;
                 uniforms.camera_pos = pos;
                 uniforms.diffuse_map = 0;
@@ -103,7 +99,7 @@ namespace game
 
         void GenerateModel()
         {
-            std::vector<gl::BasicLightingShader::Vertex> vertices;
+            std::vector<BasicLightingShader::Vertex> vertices;
             for (int x = 0; x < kSize; x++)
             {
                 for (int y = 0; y < kSize; y++)
@@ -140,7 +136,7 @@ namespace game
                     }
                 }
             }
-            SetModel(std::make_shared<gl::Model>(vertices, shader_, texture_));
+            SetModel(std::make_shared<gl::Model>(vertices, std::move(std::static_pointer_cast<BasicLightingShader>(Game::GetShader("basic-lighting"))), std::move(Game::GetTexture("chunk"))));
         }
     };
 }

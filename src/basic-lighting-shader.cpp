@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "basic-lighting-shader.h"
 
-namespace gl
+namespace game
 {
     BasicLightingShader::BasicLightingShader()
         : Shader("res/shaders/basic-lighting.vs", "res/shaders/basic-lighting.fs")

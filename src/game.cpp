@@ -12,20 +12,17 @@
 
 namespace game
 {
-    Game::Game()
-        : camera_(0.1f, 0.1f)
-    {}
+    std::map<std::string, std::shared_ptr<gl::Texture>> Game::textures;
+    std::map<std::string, std::shared_ptr<gl::Shader>> Game::shaders;
 
-    void Game::Init()
+    void Game::InitShaders()
     {
-        auto basic_lighting_shader = std::make_shared<gl::BasicLightingShader>();
-        auto chunk_texture = gl::Texture::Load2DTexture("res/textures/chunk.png");
-        auto chunk = std::make_shared<game::Chunk>(this, basic_lighting_shader, chunk_texture);
-        Spawn(chunk);
+        shaders.insert({ "basic-lighting", std::make_shared<BasicLightingShader>() });
+    }
 
-        gl::LightColor light_color{ glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f) };
-        auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
-        AddLight(light);
+    void Game::InitTextures()
+    {
+        textures.insert({ "chunk", gl::Texture::Load2DTexture("res/textures/chunk.png") });
 
         std::vector<std::string> skybox_paths{
             "res/textures/skybox/right.jpg",
@@ -35,7 +32,31 @@ namespace game
             "res/textures/skybox/front.jpg",
             "res/textures/skybox/back.jpg"
         };
-        auto skybox = gl::Texture::LoadCubemapTexture(skybox_paths);
+        textures.insert({ "skybox", gl::Texture::LoadCubemapTexture(skybox_paths) });
+    }
+
+    std::shared_ptr<gl::Shader> Game::GetShader(const std::string& name)
+    {
+        return std::move(shaders.find(name)->second);
+    }
+
+    std::shared_ptr<gl::Texture> Game::GetTexture(const std::string& name)
+    {
+        return std::move(textures.find(name)->second);
+    }
+
+    Game::Game()
+        : camera_(0.1f, 0.1f)
+    {}
+
+    void Game::Init()
+    {
+        auto chunk = std::make_shared<game::Chunk>(this);
+        Spawn(chunk);
+
+        gl::LightColor light_color{ glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f) };
+        auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
+        AddLight(light);
     }
 
     void Game::Update()
