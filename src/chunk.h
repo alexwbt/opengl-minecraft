@@ -55,37 +55,42 @@ namespace game
             { 3, 3, 3, 3, 1, 2 }
         };
 
-        static constexpr int kSize = 8;
+        static constexpr int kSize = 32;
 
-        int data[kSize][kSize][kSize]{};
+
+    private:
+        glm::vec3 coordinate_;
+
+        int data_[kSize][kSize][kSize]{};
 
     public:
-        Chunk(Game* game) : Object(game)
+        Chunk(Game* game, const glm::vec3& coordinate)
+            : Object(game), coordinate_(coordinate)
         {
+            position_ = coordinate * (float)kSize;
+
             RandomData();
             GenerateModel();
         }
 
-        void Render(const glm::mat4& pv) override
+        void Render(const RenderInfo& info) override
         {
-            if (model_)
-            {
-                glm::mat4 model_matrix = glm::mat4(1.0f);
-                model_matrix = glm::translate(model_matrix, position_);
+            if (!model_) return;
+            glm::mat4 model_matrix = glm::mat4(1.0f);
+            model_matrix = glm::translate(model_matrix, position_);
 
-                auto lights = game_->GetLights();
-                auto pos = game_->camera().position;
+            auto lights = game_->GetLights();
+            auto pos = game_->camera().position;
 
-                BasicLightingShader::Uniforms uniforms;
-                uniforms.lights = lights;
-                uniforms.camera_pos = pos;
-                uniforms.diffuse_map = 0;
-                uniforms.specular = 0.2f;
-                uniforms.shininess = 16.0f;
-                uniforms.mvp = pv * model_matrix;
-                uniforms.model = model_matrix;
-                model_->Render(&uniforms);
-            }
+            BasicLightingShader::Uniforms uniforms;
+            uniforms.lights = lights;
+            uniforms.camera_pos = pos;
+            uniforms.diffuse_map = 0;
+            uniforms.specular = 0.2f;
+            uniforms.shininess = 16.0f;
+            uniforms.mvp = info.pv * model_matrix;
+            uniforms.model = model_matrix;
+            model_->Render(&uniforms);
         }
 
     private:
@@ -94,7 +99,7 @@ namespace game
             for (int x = 0; x < kSize; x++)
                 for (int y = 0; y < kSize; y++)
                     for (int z = 0; z < kSize; z++)
-                        data[x][y][z] = rand() % 4 - 1;
+                        data_[x][y][z] = rand() % 4 - 1;
         }
 
         void GenerateModel()
@@ -106,19 +111,19 @@ namespace game
                 {
                     for (int z = 0; z < kSize; z++)
                     {
-                        if (data[x][y][z] < 0) continue;
+                        if (data_[x][y][z] < 0) continue;
                         for (int f = 0; f < 6; f++)
                         {
                             int ix = x + (int)kCube[f * 6 * 8 + 3];
                             int iy = y + (int)kCube[f * 6 * 8 + 4];
                             int iz = z + (int)kCube[f * 6 * 8 + 5];
                             bool oob = ix < 0 || ix >= kSize || iy < 0 || iy >= kSize || iz < 0 || iz >= kSize;
-                            if (!oob && (oob || data[ix][iy][iz] >= 0)) continue;
+                            if (!oob && (oob || data_[ix][iy][iz] >= 0)) continue;
                             for (int v = 0; v < 6; v++)
                             {
                                 int i = f * 6 + v;
-                                int tx = kTextures[data[x][y][z]][f] % 10;
-                                int ty = kTextures[data[x][y][z]][f] / 10;
+                                int tx = kTextures[data_[x][y][z]][f] % 10;
+                                int ty = kTextures[data_[x][y][z]][f] / 10;
                                 vertices.push_back({ {
                                         x + kCube[i * 8],
                                         y + kCube[i * 8 + 1],
@@ -128,15 +133,17 @@ namespace game
                                         kCube[i * 8 + 4],
                                         kCube[i * 8 + 5]
                                     }, {
-                                        (tx + kCube[i * 8 + 6]) * 0.1f,
-                                        (ty + kCube[i * 8 + 7]) * 0.1f
+                                        (tx + (kCube[i * 8 + 6] - 0.5f) * 0.99f + 0.5f) * 0.1f,
+                                        (ty + (kCube[i * 8 + 7] - 0.5f) * 0.99f + 0.5f) * 0.1f
                                     } });
                             }
                         }
                     }
                 }
             }
-            SetModel(std::make_shared<gl::Model>(vertices, std::move(std::static_pointer_cast<BasicLightingShader>(Game::GetShader("basic-lighting"))), std::move(Game::GetTexture("chunk"))));
+            auto texture = Game::GetTexture("chunk");
+            auto shader = Game::GetShader("basic-lighting");
+            SetModel(std::make_shared<gl::Model>(vertices, std::move(shader), std::move(texture)));
         }
     };
 }

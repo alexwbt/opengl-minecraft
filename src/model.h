@@ -27,10 +27,10 @@ namespace gl
 		GLsizei indices_size_ = 0;
 
 	public:
-		template <typename ShaderType>
+		template <typename VertexType>
 		Model(
-			const std::vector<typename ShaderType::Vertex> vertices,
-			std::shared_ptr<ShaderType> shader,
+			const std::vector<VertexType> vertices,
+			std::shared_ptr<Shader> shader,
 			std::shared_ptr<Texture> texture
 		) :
 			type_(Type::kVertex),
@@ -44,7 +44,7 @@ namespace gl
 			glBindVertexArray(vao_id_);
 
 			glBindBuffer(GL_ARRAY_BUFFER, vbo_id_);
-			glBufferData(GL_ARRAY_BUFFER, vertices_size_ * sizeof(typename ShaderType::Vertex), vertices.data(), GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, vertices_size_ * sizeof(VertexType), vertices.data(), GL_STATIC_DRAW);
 
 			shader_->EnableAttributes();
 

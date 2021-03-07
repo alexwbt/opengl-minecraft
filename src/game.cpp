@@ -3,7 +3,17 @@
 
 // gl
 #include "model.h"
+
+// shaders
 #include "basic-lighting-shader.h"
+#include "skybox-shader.h"
+
+struct RenderInfo
+{
+    glm::mat4 projection;
+    glm::mat4 view;
+    glm::mat4 pv;
+};
 
 // game
 #include "object.h"
@@ -18,31 +28,32 @@ namespace game
     void Game::InitShaders()
     {
         shaders.insert({ "basic-lighting", std::make_shared<BasicLightingShader>() });
+        shaders.insert({ "skybox", std::make_shared<SkyboxShader>() });
     }
 
     void Game::InitTextures()
     {
-        textures.insert({ "chunk", gl::Texture::Load2DTexture("res/textures/chunk.png") });
+        textures.insert({ "chunk", gl::Texture::Load2DTexture("res/textures/chunk.png", GL_RGBA) });
 
         std::vector<std::string> skybox_paths{
-            "res/textures/skybox/right.jpg",
-            "res/textures/skybox/left.jpg",
-            "res/textures/skybox/top.jpg",
-            "res/textures/skybox/bottom.jpg",
-            "res/textures/skybox/front.jpg",
-            "res/textures/skybox/back.jpg"
+            "res/textures/void/right.png",
+            "res/textures/void/left.png",
+            "res/textures/void/top.png",
+            "res/textures/void/bottom.png",
+            "res/textures/void/front.png",
+            "res/textures/void/back.png"
         };
         textures.insert({ "skybox", gl::Texture::LoadCubemapTexture(skybox_paths) });
     }
 
     std::shared_ptr<gl::Shader> Game::GetShader(const std::string& name)
     {
-        return std::move(shaders.find(name)->second);
+        return shaders.find(name)->second;
     }
 
     std::shared_ptr<gl::Texture> Game::GetTexture(const std::string& name)
     {
-        return std::move(textures.find(name)->second);
+        return textures.find(name)->second;
     }
 
     Game::Game()
@@ -51,8 +62,18 @@ namespace game
 
     void Game::Init()
     {
-        auto chunk = std::make_shared<game::Chunk>(this);
-        Spawn(chunk);
+        SetSkybox(std::make_shared<game::Skybox>(this));
+
+
+        for (int x = 0; x < 4; x++)
+        {
+            for (int y = 0; y < 4; y++)
+            {
+                glm::vec3 coord(x, 0, y);
+                auto chunk = std::make_shared<game::Chunk>(this, coord);
+                chunks_.insert({ coord, std::move(chunk) });
+            }
+        }
 
         gl::LightColor light_color{ glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f) };
         auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
@@ -70,9 +91,20 @@ namespace game
     {
         glm::mat4 projection = glm::perspective(glm::radians(camera_.fov), width / height, 0.1f, 100.0f);
         glm::mat4 pv = projection * camera_.view_matrix;
-        
+
+        const RenderInfo info{
+            projection,
+            camera_.view_matrix,
+            pv
+        };
+
+        skybox_->Render(info);
+
+        for (auto& it : chunks_)
+            it.second->Render(info);
+
         for (auto& object : objects_)
-            object->Render(pv);
+            object->Render(info);
     }
 
     void Game::AddLight(std::shared_ptr<gl::Light> light)
@@ -83,6 +115,11 @@ namespace game
     void Game::Spawn(std::shared_ptr<Object> object)
     {
         objects_.push_back(std::move(object));
+    }
+
+    void Game::SetSkybox(std::shared_ptr<Skybox> skybox)
+    {
+        skybox_ = std::move(skybox);
     }
 
     std::vector<std::shared_ptr<gl::Light>> Game::GetLights()

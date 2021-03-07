@@ -38,6 +38,7 @@ int main()
 
         auto game = std::make_shared<game::Game>();
 
+        glfwWindowHint(GLFW_SAMPLES, 8);
         auto window = glfw::GlfwManager::CreateWindow(800, 600, "OpenGL Minecraft");
         GLFWwindow* glfw_window = glfw::GlfwManager::Get(window);
         auto handler = std::make_shared<Handler>(*game, window);
@@ -55,6 +56,8 @@ int main()
         glEnable(GL_CULL_FACE);
         glFrontFace(GL_CCW);
         glCullFace(GL_FRONT);
+
+        glEnable(GL_MULTISAMPLE);
 
         glEnable(GL_DEPTH_TEST);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

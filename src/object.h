@@ -36,6 +36,6 @@ namespace game
 
         }
 
-        virtual void Render(const glm::mat4& pv) = 0;
+        virtual void Render(const RenderInfo& info) = 0;
     };
 }

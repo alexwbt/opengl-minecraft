@@ -5,8 +5,8 @@ namespace gl
     class Texture
     {
     public:
-        static std::shared_ptr<Texture> Load2DTexture(const std::string& path);
-        static std::shared_ptr<Texture> LoadCubemapTexture(std::vector<std::string>& paths);
+        static std::shared_ptr<Texture> Load2DTexture(const std::string& path, int format = GL_RGB);
+        static std::shared_ptr<Texture> LoadCubemapTexture(std::vector<std::string>& paths, int format = GL_RGB);
 
     private:
         uint32_t id_;

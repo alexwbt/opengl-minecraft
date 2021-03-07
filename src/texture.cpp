@@ -6,14 +6,14 @@
 
 namespace gl
 {
-    std::shared_ptr<Texture> Texture::Load2DTexture(const std::string& path)
+    std::shared_ptr<Texture> Texture::Load2DTexture(const std::string& path, int format)
     {
         uint32_t id;
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -21,7 +21,7 @@ namespace gl
         stbi_uc* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
         if (data)
         {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else throw std::runtime_error("Failed to load texture " + path);
@@ -30,7 +30,7 @@ namespace gl
         return std::make_shared<Texture>(id, GL_TEXTURE_2D);
     }
 
-    std::shared_ptr<Texture> Texture::LoadCubemapTexture(std::vector<std::string>& paths)
+    std::shared_ptr<Texture> Texture::LoadCubemapTexture(std::vector<std::string>& paths, int format)
     {
         static constexpr int kSides = 6;
         if (paths.size() != kSides)
@@ -54,7 +54,7 @@ namespace gl
             if (!data) throw std::runtime_error("Failed to load texture " + paths[i]);
             glTexImage2D(
                 GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+                0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data
             );
             stbi_image_free(data);
         }
