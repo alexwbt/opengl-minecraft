@@ -22,6 +22,9 @@ struct RenderInfo
 #include "perlin-noise.h"
 #include "chunk.h"
 #include "chunk-manager.h"
+#include "chunk-collider.h"
+
+#include "entity.h"
 
 namespace game
 {
@@ -67,7 +70,7 @@ namespace game
     {
         SetSkybox(std::make_shared<game::Skybox>(this));
 
-        gl::LightColor light_color{ glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f) };
+        gl::LightColor light_color{ glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f) };
         auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
         AddLight(light);
     }
@@ -76,8 +79,8 @@ namespace game
     {
         camera_.Update();
         chunk_manager_->Update(camera_.position);
-        for (auto& object : objects_)
-            object->Update();
+        for (auto& entity : entities_)
+            entity->Update();
     }
 
     void Game::Render(float width, float height)
@@ -95,8 +98,8 @@ namespace game
 
         chunk_manager_->Render(info);
 
-        for (auto& object : objects_)
-            object->Render(info);
+        for (auto& entity : entities_)
+            entity->Render(info);
     }
 
     void Game::AddLight(std::shared_ptr<gl::Light> light)
@@ -104,9 +107,9 @@ namespace game
         lights_.push_back(std::move(light));
     }
 
-    void Game::Spawn(std::shared_ptr<Object> object)
+    void Game::Spawn(std::shared_ptr<Object> entity)
     {
-        objects_.push_back(std::move(object));
+        entitys_.push_back(std::move(entity));
     }
 
     void Game::SetSkybox(std::shared_ptr<Skybox> skybox)

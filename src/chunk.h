@@ -81,7 +81,8 @@ namespace game
 
         void Update() override
         {
-            if (generate_future_.valid())
+            if (generate_future_.valid() &&
+                generate_future_.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
             {
                 auto data = generate_future_.get();
                 for (int x = 0; x < kSize; x++)

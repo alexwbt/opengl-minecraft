@@ -17,10 +17,8 @@ namespace game
 
     public:
         Object(Game* game)
-            : game_(game), id_(0), position_(0)
-        {
-
-        }
+            : game_(game), id_(game->NextId()), position_(0)
+        {}
 
         virtual ~Object() {}
 
@@ -32,9 +30,7 @@ namespace game
         }
 
         virtual void Update()
-        {
-
-        }
+        {}
 
         virtual void Render(const RenderInfo& info) = 0;
     };

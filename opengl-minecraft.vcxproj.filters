@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Game\Chunk">
       <UniqueIdentifier>{a9585936-b4b4-409a-b8fd-8be3e7c0a9cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Entity">
+      <UniqueIdentifier>{26f13a82-66f9-4ddc-81e6-1062048609f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -103,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="src\chunk.h">
       <Filter>Source Files\Game\Chunk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\chunk-collider.h">
+      <Filter>Source Files\Game\Chunk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity.h">
+      <Filter>Source Files\Game\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,10 +7,10 @@
 
 namespace game
 {
-    class Object;
     class Skybox;
     class Chunk;
     class ChunkManager;
+    class Entity;
 
     class Game
     {
@@ -33,7 +33,9 @@ namespace game
         std::shared_ptr<Skybox> skybox_;
 
         std::list<std::shared_ptr<gl::Light>> lights_;
-        std::list<std::shared_ptr<Object>> objects_;
+        std::list<std::shared_ptr<Entity>> entities_;
+
+        uint32_t next_id_ = 0;
 
     public:
         Game();
@@ -43,8 +45,10 @@ namespace game
         void Update();
         void Render(float width, float height);
 
+        uint32_t NextId() { return ++next_id_; }
+
         void AddLight(std::shared_ptr<gl::Light> light);
-        void Spawn(std::shared_ptr<Object> object);
+        void Spawn(std::shared_ptr<Entity> entity);
 
         void SetSkybox(std::shared_ptr<Skybox> skybox);
 

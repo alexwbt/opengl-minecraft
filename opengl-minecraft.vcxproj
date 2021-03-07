@@ -116,6 +116,8 @@
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\chunk-collider.h" />
     <ClInclude Include="src\chunk-manager.h" />
     <ClInclude Include="src\perlin-noise.h" />
     <ClInclude Include="src\skybox-shader.h" />
