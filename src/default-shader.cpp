@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "basic-lighting-shader.h"
+#include "default-shader.h"
 
 namespace game
 {
-    BasicLightingShader::BasicLightingShader()
-        : Shader("res/shaders/basic-lighting.vs", "res/shaders/basic-lighting.fs")
+    DefaultShader::DefaultShader()
+        : Shader("res/shaders/default.vs", "res/shaders/default.fs")
     {}
 
-    void BasicLightingShader::Use(Shader::Uniforms* uniforms)
+    void DefaultShader::Use(Shader::Uniforms* uniforms)
     {
         UseProgram();
 
@@ -35,7 +35,7 @@ namespace game
         SetMat4("model", data->model);
     }
 
-    void BasicLightingShader::EnableAttributes()
+    void DefaultShader::EnableAttributes()
     {
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(struct Vertex, pos));

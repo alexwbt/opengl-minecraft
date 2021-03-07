@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Game\Shaders">
       <UniqueIdentifier>{91197a1b-cede-4892-aebf-8704fa53039b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Chunk">
+      <UniqueIdentifier>{a9585936-b4b4-409a-b8fd-8be3e7c0a9cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -36,7 +39,7 @@
     <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\basic-lighting-shader.cpp">
+    <ClCompile Include="src\default-shader.cpp">
       <Filter>Source Files\Game\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\shader.cpp">
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="src\skybox-shader.cpp">
       <Filter>Source Files\Game\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perlin-noise.cpp">
+      <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -65,9 +71,6 @@
     <ClInclude Include="src\camera.h">
       <Filter>Source Files\GL</Filter>
     </ClInclude>
-    <ClInclude Include="src\chunk.h">
-      <Filter>Source Files\Game\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\light.h">
       <Filter>Source Files\GL</Filter>
     </ClInclude>
@@ -77,7 +80,7 @@
     <ClInclude Include="src\file.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="src\basic-lighting-shader.h">
+    <ClInclude Include="src\default-shader.h">
       <Filter>Source Files\Game\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shader.h">
@@ -91,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="src\skybox.h">
       <Filter>Source Files\Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perlin-noise.h">
+      <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\chunk-manager.h">
+      <Filter>Source Files\Game\Chunk</Filter>
+    </ClInclude>
+    <ClInclude Include="src\chunk.h">
+      <Filter>Source Files\Game\Chunk</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

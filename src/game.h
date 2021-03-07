@@ -10,21 +10,10 @@ namespace game
     class Object;
     class Skybox;
     class Chunk;
+    class ChunkManager;
 
     class Game
     {
-        struct KeyFuncs
-        {
-            size_t operator()(const glm::vec3& k)const
-            {
-                return std::hash<float>()(k.x) ^ std::hash<float>()(k.y) ^ std::hash<float>()(k.z);
-            }
-
-            bool operator()(const glm::vec3& a, const glm::vec3& b)const
-            {
-                return a.x == b.x && a.y == b.y && b.z == a.z;
-            }
-        };
 
     private:
         static std::map<std::string, std::shared_ptr<gl::Texture>> textures;
@@ -39,9 +28,9 @@ namespace game
     private:
         gl::CameraControl camera_;
 
-        std::shared_ptr<Skybox> skybox_;
+        std::shared_ptr<ChunkManager> chunk_manager_;
 
-        std::unordered_map<glm::vec3, std::shared_ptr<Chunk>, KeyFuncs, KeyFuncs> chunks_;
+        std::shared_ptr<Skybox> skybox_;
 
         std::list<std::shared_ptr<gl::Light>> lights_;
         std::list<std::shared_ptr<Object>> objects_;

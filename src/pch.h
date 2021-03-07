@@ -8,6 +8,12 @@
 #include <sstream>
 #include <memory>
 #include <functional>
+#include <cmath>
+#include <random>
+#include <algorithm>
+#include <numeric>
+#include <mutex>
+#include <future>
 
 #include <glad/glad.h>
 

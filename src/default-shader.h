@@ -4,7 +4,7 @@
 
 namespace game
 {
-    class BasicLightingShader : public gl::Shader
+    class DefaultShader : public gl::Shader
     {
     public:
         struct Uniforms : public Shader::Uniforms
@@ -26,7 +26,7 @@ namespace game
         };
 
     public:
-        BasicLightingShader();
+        DefaultShader();
 
         void Use(Shader::Uniforms* uniforms) override;
         void EnableAttributes() override;

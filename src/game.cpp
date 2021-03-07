@@ -5,7 +5,7 @@
 #include "model.h"
 
 // shaders
-#include "basic-lighting-shader.h"
+#include "default-shader.h"
 #include "skybox-shader.h"
 
 struct RenderInfo
@@ -17,8 +17,11 @@ struct RenderInfo
 
 // game
 #include "object.h"
-#include "chunk.h"
 #include "skybox.h"
+
+#include "perlin-noise.h"
+#include "chunk.h"
+#include "chunk-manager.h"
 
 namespace game
 {
@@ -27,7 +30,7 @@ namespace game
 
     void Game::InitShaders()
     {
-        shaders.insert({ "basic-lighting", std::make_shared<BasicLightingShader>() });
+        shaders.insert({ "default", std::make_shared<DefaultShader>() });
         shaders.insert({ "skybox", std::make_shared<SkyboxShader>() });
     }
 
@@ -57,23 +60,12 @@ namespace game
     }
 
     Game::Game()
-        : camera_(0.1f, 0.1f)
+        : camera_(0.1f, 0.1f), chunk_manager_(std::make_shared<ChunkManager>(this))
     {}
 
     void Game::Init()
     {
         SetSkybox(std::make_shared<game::Skybox>(this));
-
-
-        for (int x = 0; x < 4; x++)
-        {
-            for (int y = 0; y < 4; y++)
-            {
-                glm::vec3 coord(x, 0, y);
-                auto chunk = std::make_shared<game::Chunk>(this, coord);
-                chunks_.insert({ coord, std::move(chunk) });
-            }
-        }
 
         gl::LightColor light_color{ glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f) };
         auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
@@ -83,13 +75,14 @@ namespace game
     void Game::Update()
     {
         camera_.Update();
+        chunk_manager_->Update(camera_.position);
         for (auto& object : objects_)
             object->Update();
     }
 
     void Game::Render(float width, float height)
     {
-        glm::mat4 projection = glm::perspective(glm::radians(camera_.fov), width / height, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera_.fov), width / height, 0.1f, 1000.0f);
         glm::mat4 pv = projection * camera_.view_matrix;
 
         const RenderInfo info{
@@ -100,8 +93,7 @@ namespace game
 
         skybox_->Render(info);
 
-        for (auto& it : chunks_)
-            it.second->Render(info);
+        chunk_manager_->Render(info);
 
         for (auto& object : objects_)
             object->Render(info);
