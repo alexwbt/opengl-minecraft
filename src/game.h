@@ -11,10 +11,10 @@ namespace game
     class Chunk;
     class ChunkManager;
     class Entity;
+    class DebugRender;
 
     class Game
     {
-
     private:
         static std::map<std::string, std::shared_ptr<gl::Texture>> textures;
         static std::map<std::string, std::shared_ptr<gl::Shader>> shaders;
@@ -29,6 +29,8 @@ namespace game
         gl::CameraControl camera_;
 
         uint32_t player_id_;
+
+        std::shared_ptr<DebugRender> debug_render_;
 
         std::shared_ptr<ChunkManager> chunk_manager_;
 
@@ -57,6 +59,7 @@ namespace game
         std::vector<std::shared_ptr<gl::Light>> GetLights();
         gl::CameraControl& GetCameraControl() { return camera_; }
         std::shared_ptr<Chunk> GetChunk(const glm::vec3& pos);
+        std::shared_ptr<DebugRender> debug_render() const { return debug_render_; }
 
         gl::Camera camera() const { return camera_; }
     };

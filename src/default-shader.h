@@ -30,7 +30,5 @@ namespace game
 
         void Use(Shader::Uniforms* uniforms) override;
         void EnableAttributes() override;
-
-    private:
     };
 }

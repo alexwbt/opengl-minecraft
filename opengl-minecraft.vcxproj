@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\debug-shader.cpp" />
     <ClCompile Include="src\perlin-noise.cpp" />
     <ClCompile Include="src\default-shader.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -116,6 +117,8 @@
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\debug-render.h" />
+    <ClInclude Include="src\debug-shader.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\chunk-collider.h" />
     <ClInclude Include="src\chunk-manager.h" />

@@ -29,7 +29,7 @@ namespace gl
 	public:
 		template <typename VertexType>
 		Model(
-			const std::vector<VertexType> vertices,
+			const std::vector<VertexType>& vertices,
 			std::shared_ptr<Shader> shader,
 			std::shared_ptr<Texture> texture
 		) :

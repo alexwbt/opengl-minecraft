@@ -7,6 +7,7 @@
 // shaders
 #include "default-shader.h"
 #include "skybox-shader.h"
+#include "debug-shader.h"
 
 struct RenderInfo
 {
@@ -14,6 +15,8 @@ struct RenderInfo
     glm::mat4 view;
     glm::mat4 pv;
 };
+
+#include "debug-render.h"
 
 // game
 #include "object.h"
@@ -62,12 +65,15 @@ namespace game
         return textures.find(name)->second;
     }
 
-    Game::Game()
-        : camera_(0.1f, 0.1f), chunk_manager_(std::make_shared<ChunkManager>(this))
+    Game::Game() :
+        camera_(0.1f, 0.1f),
+        chunk_manager_(std::make_shared<ChunkManager>(this))
     {}
 
     void Game::Init()
     {
+        debug_render_ = std::make_shared<DebugRender>(std::make_shared<DebugShader>());
+
         SetSkybox(std::make_shared<game::Skybox>(this));
 
         gl::LightColor light_color{ glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f) };
@@ -121,6 +127,9 @@ namespace game
 
         for (auto& entity : entities_)
             entity->Render(info);
+
+        debug_render_->DrawLine({ 0, 0, 0 }, { 0, 32, 0 });
+        debug_render_->Render(info);
     }
 
     void Game::AddLight(std::shared_ptr<gl::Light> light)
