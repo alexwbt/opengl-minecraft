@@ -15,16 +15,16 @@ namespace game
 
         bool Collides(const glm::vec3& pos, Game* game)
         {
-            glm::vec3 tmp_pos = pos;
+            glm::vec3 tmp_pos = pos + 0.5f;
 
-            tmp_pos.z -= front;
-            if (PointInBlock(tmp_pos, game))
-                return true;
             tmp_pos.z += front;
-            tmp_pos.z += back;
             if (PointInBlock(tmp_pos, game))
                 return true;
+            tmp_pos.z -= front;
             tmp_pos.z -= back;
+            if (PointInBlock(tmp_pos, game))
+                return true;
+            tmp_pos.z += back;
 
             tmp_pos.y += top;
             if (PointInBlock(tmp_pos, game))
@@ -35,15 +35,14 @@ namespace game
                 return true;
             tmp_pos.y += bottom;
 
-            tmp_pos.x -= left;
-            if (PointInBlock(tmp_pos, game))
-                return true;
             tmp_pos.x += left;
-            tmp_pos.x += right;
             if (PointInBlock(tmp_pos, game))
                 return true;
+            tmp_pos.x -= left;
             tmp_pos.x -= right;
-
+            if (PointInBlock(tmp_pos, game))
+                return true;
+            tmp_pos.x += right;
             return false;
         }
 
@@ -51,8 +50,13 @@ namespace game
         bool PointInBlock(const glm::vec3& pos, Game* game)
         {
             auto chunk = game->GetChunk(glm::floor(pos / (float)Chunk::kSize));
-            if (!chunk) return true;
+            if (!chunk)
+            {
+                std::cout << "unloaded chunk" << std::endl;
+                return true;
+            }
             glm::vec3 block_pos = glm::floor(pos - chunk->GetPos());
+            std::cout << block_pos.x << " " << block_pos.y << " " << block_pos.z << std::endl;
             return chunk->GetData(block_pos) >= 0;
         }
     };
