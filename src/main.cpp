@@ -79,14 +79,13 @@ int main()
             bool should_update = delta_time >= 1;
             while (delta_time >= 1)
             {
-                game->GetCameraControl().UpdateControls({
+                game->Update({
                     glfwGetKey(glfw_window, GLFW_KEY_W) == GLFW_PRESS,
                     glfwGetKey(glfw_window, GLFW_KEY_S) == GLFW_PRESS,
                     glfwGetKey(glfw_window, GLFW_KEY_D) == GLFW_PRESS,
                     glfwGetKey(glfw_window, GLFW_KEY_A) == GLFW_PRESS,
                     glfwGetKey(glfw_window, GLFW_KEY_SPACE) == GLFW_PRESS,
                     glfwGetKey(glfw_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS });
-                game->Update();
                 update_counter++;
                 delta_time--;
             }

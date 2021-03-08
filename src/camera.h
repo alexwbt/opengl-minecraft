@@ -9,7 +9,7 @@ namespace gl
 		float fov = 80.0f;
 		glm::vec3 position{};
 
-		glm::vec3 front, right, up;
+		glm::vec3 front, front_side, right, up;
 		glm::mat4 view_matrix;
 
 		Camera()
@@ -23,6 +23,11 @@ namespace gl
 				glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch)),
 				glm::sin(glm::radians(pitch)),
 				glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch))
+			));
+			front_side = glm::normalize(glm::vec3(
+				glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(0.0f)),
+				glm::sin(glm::radians(0.0f)),
+				glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(0.0f))
 			));
 			right = glm::normalize(glm::cross(front, glm::vec3(0, 1, 0)));
 			up = glm::normalize(glm::cross(right, front));

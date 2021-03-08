@@ -28,6 +28,8 @@ namespace game
     private:
         gl::CameraControl camera_;
 
+        uint32_t player_id_;
+
         std::shared_ptr<ChunkManager> chunk_manager_;
 
         std::shared_ptr<Skybox> skybox_;
@@ -42,7 +44,7 @@ namespace game
 
         void Init();
 
-        void Update();
+        void Update(const std::vector<bool>& controls);
         void Render(float width, float height);
 
         uint32_t NextId() { return ++next_id_; }
@@ -54,6 +56,7 @@ namespace game
 
         std::vector<std::shared_ptr<gl::Light>> GetLights();
         gl::CameraControl& GetCameraControl() { return camera_; }
+        std::shared_ptr<Chunk> GetChunk(const glm::vec3& pos);
 
         gl::Camera camera() const { return camera_; }
     };

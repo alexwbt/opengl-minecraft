@@ -23,11 +23,10 @@ namespace game
         virtual ~Object() {}
 
         uint32_t id() const { return id_; }
+        glm::vec3 position() const { return position_; }
 
-        void SetModel(std::shared_ptr<gl::Model> model)
-        {
-            model_ = std::move(model);
-        }
+        void SetModel(std::shared_ptr<gl::Model> model) { model_ = std::move(model); }
+        void SetPosition(const glm::vec3& pos) { position_ = pos; }
 
         virtual void Update()
         {}

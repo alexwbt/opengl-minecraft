@@ -76,7 +76,7 @@ namespace game
         {
             position_ = coordinate * (float)kSize;
 
-            generate_future_ = std::async(std::launch::async, std::bind(Chunk::Generate, position_));
+            generate_future_ = std::async(std::launch::async, std::bind(Chunk::Generate, position_, game));
         }
 
         void Update() override
@@ -115,53 +115,68 @@ namespace game
             model_->Render(&uniforms);
         }
 
+        int GetData(const glm::vec3& pos)
+        {
+            return GetData((int)pos.x, (int)pos.y, (int)pos.z);
+        }
+
+        int GetData(int x, int y, int z)
+        {
+            return data_[x][y][z];
+        }
+
+        glm::vec3 GetPos()
+        {
+            return position_;
+        }
+
     private:
-        static std::shared_ptr<ChunkGenerationData> Generate(const glm::vec3& position)
+        static std::shared_ptr<ChunkGenerationData> Generate(const glm::vec3& position, Game* game)
         {
             auto data = std::make_shared<ChunkGenerationData>();
-            GenerateData(position, data->chunk_data);
+            GenerateData(position, data->chunk_data, game);
             data->vertices = GenerateModel(data->chunk_data);
             return data;
         }
 
-        static void GenerateData(const glm::vec3& position, int(*data)[kSize][kSize])
+        static bool Noise(const glm::vec3& block_pos)
         {
             static util::PerlinNoise noise;
-
             static constexpr int kOctaves = 4;
             static constexpr int kLacunarity = 2;
             static constexpr float kPersistance = 0.5f;
             static constexpr float kScale = 40.0f;
 
-            for (int x = 0; x < kSize; x++)
+            glm::vec3 pos = block_pos / kScale;
+            double value = -block_pos.y;
+            for (int i = 0; i < kOctaves; i++)
             {
-                for (int y = 0; y < kSize; y++)
-                {
-                    for (int z = 0; z < kSize; z++)
-                    {
-                        glm::vec3 pos = (position + glm::vec3(x, y, z)) / kScale;
-                        double value = -position.y - y;
-                        for (int i = 0; i < kOctaves; i++)
-                        {
-                            pos *= pow(kLacunarity, i) * pow(kPersistance, i);
-                            value += noise.value(pos.x, pos.y, pos.z) * kSize * 0.5;
-                        }
-
-                        data[x][y][z] = value > kSize * 0.5 ? 0 : -1;
-                    }
-                }
+                pos *= pow(kLacunarity, i) * pow(kPersistance, i);
+                value += noise.value(pos.x, pos.y, pos.z) * kSize * 0.5;
             }
+            return value > kScale * 0.5;
+        }
+
+        static void GenerateData(const glm::vec3& position, int(*data)[kSize][kSize], Game* game)
+        {
+            for (int x = 0; x < kSize; x++)
+                for (int y = 0; y < kSize; y++)
+                    for (int z = 0; z < kSize; z++)
+                        data[x][y][z] = Noise(position + glm::vec3(x, y, z)) ? 0 : -1;
 
             for (int x = 0; x < kSize; x++)
             {
-                for (int y = 0; y < kSize; y++)
+                for (int z = 0; z < kSize; z++)
                 {
-                    for (int z = 0; z < kSize; z++)
+                    for (int y = kSize - 1; y >= 0; y--)
                     {
                         if (data[x][y][z] == 0)
                         {
                             if (y < kSize - 1 && data[x][y + 1][z] == -1)
                                 data[x][y][z] = 2;
+                            else if (y == kSize - 1)
+                                data[x][y][z] = Noise(position + glm::vec3(x, y + 1, z)) ? 0 : 2;
+                            break;
                         }
                     }
                 }

@@ -18,7 +18,7 @@ namespace game
         };
 
         static constexpr int kLoadRange = 5;
-        static constexpr int kLoadRangeY = 1;
+        static constexpr int kLoadRangeY = 2;
     private:
         Game* game_;
         std::unordered_map<glm::vec3, std::shared_ptr<Chunk>, KeyFuncs, KeyFuncs> chunks_;
@@ -29,6 +29,14 @@ namespace game
         ChunkManager(Game* game)
             : game_(game)
         {}
+
+        std::shared_ptr<Chunk> GetChunk(const glm::vec3& pos)
+        {
+            auto it = chunks_.find(pos);
+            if (it == chunks_.end())
+                return nullptr;
+            return it->second;
+        }
 
         void Update(const glm::vec3& load_pos)
         {

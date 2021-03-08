@@ -73,14 +73,35 @@ namespace game
         gl::LightColor light_color{ glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f) };
         auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
         AddLight(light);
+
+        auto player = std::make_shared<Entity>(this);
+        player->SetPosition({0, 32, 0});
+        player_id_ = player->id();
+        Spawn(player);
     }
 
-    void Game::Update()
+    void Game::Update(const std::vector<bool>& controls)
     {
-        camera_.Update();
         chunk_manager_->Update(camera_.position);
         for (auto& entity : entities_)
+        {
+            if (entity->id() == player_id_)
+            {
+                if (controls.size() < 5) return;
+                if (controls[0]) entity->Move(0.1f * camera_.front_side);
+                if (controls[1]) entity->Move(-0.1f * camera_.front_side);
+                if (controls[2]) entity->Move(0.1f * camera_.right);
+                if (controls[3]) entity->Move(-0.1f * camera_.right);
+                if (controls[4] && entity->on_ground()) entity->Push(glm::vec3(0, 0.6f, 0));
+                //if (controls[5]) entity->Move(-0.1f * glm::vec3(0, 1, 0));
+            }
             entity->Update();
+            if (entity->id() == player_id_)
+            {
+                camera_.position = entity->position();
+            }
+        }
+        camera_.Update();
     }
 
     void Game::Render(float width, float height)
@@ -107,9 +128,9 @@ namespace game
         lights_.push_back(std::move(light));
     }
 
-    void Game::Spawn(std::shared_ptr<Object> entity)
+    void Game::Spawn(std::shared_ptr<Entity> entity)
     {
-        entitys_.push_back(std::move(entity));
+        entities_.push_back(std::move(entity));
     }
 
     void Game::SetSkybox(std::shared_ptr<Skybox> skybox)
@@ -123,5 +144,10 @@ namespace game
         lights.reserve(lights_.size());
         lights.insert(lights.begin(), lights_.begin(), lights_.end());
         return lights;
+    }
+
+    std::shared_ptr<Chunk> Game::GetChunk(const glm::vec3& pos)
+    {
+        return chunk_manager_->GetChunk(pos);
     }
 }
