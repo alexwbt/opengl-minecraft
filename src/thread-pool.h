@@ -4,16 +4,8 @@ namespace util
 {
     class ThreadPool
     {
-        struct Thread
-        {
-            std::thread thread;
-            bool running;
-            Thread(std::function<void()> run_function)
-                : thread(run_function), running(true)
-            {}
-        };
-
-        std::vector<std::shared_ptr<Thread>> threads_;
+        std::vector<std::shared_ptr<std::thread>> threads_;
+        bool running_ = false;
 
         std::queue<std::function<void()>> tasks_;
 

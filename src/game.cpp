@@ -82,7 +82,7 @@ namespace game
         AddLight(light);
 
         auto player = std::make_shared<Entity>(this);
-        player->SetPosition({0, 32, 0});
+        player->SetPosition({ 0, 32, 0 });
         player_id_ = player->id();
         Spawn(player);
     }
@@ -129,7 +129,9 @@ namespace game
         for (auto& entity : entities_)
             entity->Render(info);
 
-        debug_render_->DrawLine({ 0, 0, 0 }, { 0, 32, 0 });
+        debug_render_->DrawLine({ 0, 32, 0 }, { 16, 32, 0 }, { 1, 0, 0 });
+        debug_render_->DrawLine({ 0, 32, 0 }, { 0, 48, 0 }, { 0, 1, 0 });
+        debug_render_->DrawLine({ 0, 32, 0 }, { 0, 32, 16 }, { 0, 0, 1 });
         debug_render_->Render(info);
     }
 
