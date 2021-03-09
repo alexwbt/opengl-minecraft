@@ -19,7 +19,7 @@ namespace game
 
         void Render(const RenderInfo& info)
         {
-            int size = lines_.size();
+            int size = (int)lines_.size();
             GLuint* vaos = new GLuint[size];
             GLuint* vbos = new GLuint[size];
             glGenVertexArrays(size, vaos);

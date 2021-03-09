@@ -132,9 +132,9 @@ namespace game
 
             auto floor_min = glm::floor(min - position_);
             auto floor_max = glm::floor(max - position_);
-            for (int x = floor_min.x; x <= floor_max.x; x++)
-                for (int y = floor_min.y; y <= floor_max.y; y++)
-                    for (int z = floor_min.z; z <= floor_max.z; z++)
+            for (int x = (int)floor_min.x; x <= floor_max.x; x++)
+                for (int y = (int)floor_min.y; y <= floor_max.y; y++)
+                    for (int z = (int)floor_min.z; z <= floor_max.z; z++)
                         if (InBounds(x, y, z) && data_[x][y][z] >= 0)
                             return true;
             return false;
