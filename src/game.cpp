@@ -99,7 +99,7 @@ namespace game
                 if (controls[1]) entity->Move(-0.1f * camera_.front_side);
                 if (controls[2]) entity->Move(0.1f * camera_.right);
                 if (controls[3]) entity->Move(-0.1f * camera_.right);
-                if (controls[4] && entity->on_ground()) entity->Push(glm::vec3(0, 0.6f, 0));
+                if (controls[4] && entity->on_ground()) entity->Push(glm::vec3(0, 0.35f, 0));
                 //if (controls[5]) entity->Move(-0.1f * glm::vec3(0, 1, 0));
             }
             entity->Update();

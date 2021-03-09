@@ -4,8 +4,8 @@ namespace game
 {
     struct ChunkCollider
     {
-        glm::vec3 n_bounds{ 0.5f, 1.0f, 0.5f };
-        glm::vec3 p_bounds{ 0.5f };
+        glm::vec3 n_bounds{ 0.3f, 1.8f, 0.3f };
+        glm::vec3 p_bounds{ 0.3f, 0.1f, 0.3f };
 
         bool Collides(const glm::vec3& origin, Game* game)
         {

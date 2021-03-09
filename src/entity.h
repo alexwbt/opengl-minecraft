@@ -8,7 +8,7 @@ namespace game
         ChunkCollider collider_;
 
         static constexpr float kCollisionStep = 0.05f;
-        static constexpr float kGravity = 0.1f;
+        static constexpr float kGravity = 0.03f;
 
         glm::vec3 velocity_{0};
         glm::vec3 movements_{0};
@@ -25,7 +25,9 @@ namespace game
         void Update() override
         {
             velocity_.y -= kGravity;
-            glm::vec3 movement = (glm::normalize(movements_) * movement_speed_) + velocity_;
+            glm::vec3 movement = velocity_;
+            if (glm::length2(movements_) > 0)
+                movement += glm::normalize(movements_) * movement_speed_;
             bool x_done = false;
             bool y_done = false;
             bool z_done = false;

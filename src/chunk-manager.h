@@ -1,23 +1,23 @@
 #pragma once
 
-static constexpr float kLoadRange = 5;
-static constexpr float kLoadRangeY = 2;
-
-static std::list<glm::vec3> GetLoadOrder()
-{
-    std::list<glm::vec3> load_order;
-    for (float x = -kLoadRange; x <= kLoadRange; x++)
-        for (float y = -kLoadRangeY; y <= kLoadRangeY; y++)
-            for (float z = -kLoadRange; z <= kLoadRange; z++)
-                load_order.push_back({ x, y, z });
-    load_order.sort([](const glm::vec3& a, const glm::vec3& b) { return glm::length2(a) < glm::length2(b); });
-    return load_order;
-}
-
-static std::list<glm::vec3> chunk_load_order = GetLoadOrder();
-
 namespace game
 {
+    static constexpr float kLoadRange = 3.0f;
+    static constexpr float kLoadRangeY = 2.0f;
+
+    static std::list<glm::vec3> GetLoadOrder()
+    {
+        std::list<glm::vec3> load_order;
+        for (float x = -kLoadRange; x <= kLoadRange; x++)
+            for (float y = -kLoadRangeY; y <= kLoadRangeY; y++)
+                for (float z = -kLoadRange; z <= kLoadRange; z++)
+                    load_order.push_back({ x, y, z });
+        load_order.sort([](const glm::vec3& a, const glm::vec3& b) { return glm::length2(a) < glm::length2(b); });
+        return load_order;
+    }
+
+    static std::list<glm::vec3> chunk_load_order = GetLoadOrder();
+
     class ChunkManager
     {
         struct KeyFuncs

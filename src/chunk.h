@@ -115,6 +115,13 @@ namespace game
             model_->Render(&uniforms);
         }
 
+        bool InBounds(int x, int y, int z)
+        {
+            return x >= 0 && x < kSize
+                && y >= 0 && y < kSize
+                && z >= 0 && z < kSize;
+        }
+
         bool Collides(const glm::vec3& min, const glm::vec3& max)
         {
             auto chunk_max = position_ + (float)kSize;
@@ -128,7 +135,8 @@ namespace game
             for (int x = floor_min.x; x <= floor_max.x; x++)
                 for (int y = floor_min.y; y <= floor_max.y; y++)
                     for (int z = floor_min.z; z <= floor_max.z; z++)
-                        if (data_[x][y][z] > 0) return true;
+                        if (InBounds(x, y, z) && data_[x][y][z] >= 0)
+                            return true;
             return false;
         }
 
