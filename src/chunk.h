@@ -115,6 +115,23 @@ namespace game
             model_->Render(&uniforms);
         }
 
+        bool Collides(const glm::vec3& min, const glm::vec3& max)
+        {
+            auto chunk_max = position_ + (float)kSize;
+            if (!((min.x <= chunk_max.x && max.x >= position_.x) &&
+                (min.y <= chunk_max.y && max.y >= position_.y) &&
+                (min.z <= chunk_max.z && max.z >= position_.z)))
+                return false;
+
+            auto floor_min = glm::floor(min - position_);
+            auto floor_max = glm::floor(max - position_);
+            for (int x = floor_min.x; x <= floor_max.x; x++)
+                for (int y = floor_min.y; y <= floor_max.y; y++)
+                    for (int z = floor_min.z; z <= floor_max.z; z++)
+                        if (data_[x][y][z] > 0) return true;
+            return false;
+        }
+
         int GetData(const glm::vec3& pos)
         {
             return GetData((int)pos.x, (int)pos.y, (int)pos.z);
