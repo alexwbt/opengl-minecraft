@@ -60,6 +60,9 @@
     <ClCompile Include="src\debug-shader.cpp">
       <Filter>Source Files\Game\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="src\thread-pool.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="src\debug-shader.h">
       <Filter>Source Files\Game\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\thread-pool.h">
+      <Filter>Source Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

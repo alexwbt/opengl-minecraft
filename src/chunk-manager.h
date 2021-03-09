@@ -1,5 +1,21 @@
 #pragma once
 
+static constexpr float kLoadRange = 5;
+static constexpr float kLoadRangeY = 2;
+
+static std::list<glm::vec3> GetLoadOrder()
+{
+    std::list<glm::vec3> load_order;
+    for (float x = -kLoadRange; x <= kLoadRange; x++)
+        for (float y = -kLoadRangeY; y <= kLoadRangeY; y++)
+            for (float z = -kLoadRange; z <= kLoadRange; z++)
+                load_order.push_back({ x, y, z });
+    load_order.sort([](const glm::vec3& a, const glm::vec3& b) { return glm::length2(a) < glm::length2(b); });
+    return load_order;
+}
+
+static std::list<glm::vec3> chunk_load_order = GetLoadOrder();
+
 namespace game
 {
     class ChunkManager
@@ -16,18 +32,17 @@ namespace game
                 return a.x == b.x && a.y == b.y && b.z == a.z;
             }
         };
-
-        static constexpr int kLoadRange = 5;
-        static constexpr int kLoadRangeY = 2;
     private:
         Game* game_;
         std::unordered_map<glm::vec3, std::shared_ptr<Chunk>, KeyFuncs, KeyFuncs> chunks_;
 
         glm::vec3 load_chunk_pos_{0};
 
+        std::shared_ptr<util::ThreadPool> thread_pool_;
+
     public:
         ChunkManager(Game* game)
-            : game_(game)
+            : game_(game), thread_pool_(std::make_shared<util::ThreadPool>(3))
         {}
 
         std::shared_ptr<Chunk> GetChunk(const glm::vec3& pos)
@@ -41,18 +56,11 @@ namespace game
         void Update(const glm::vec3& load_pos)
         {
             load_chunk_pos_ = glm::floor(load_pos / (float)Chunk::kSize);
-
-            for (int x = -kLoadRange; x <= kLoadRange; x++)
+            for (auto& offset : chunk_load_order)
             {
-                for (int y = -kLoadRangeY; y <= kLoadRangeY; y++)
-                {
-                    for (int z = -kLoadRange; z <= kLoadRange; z++)
-                    {
-                        glm::vec3 pos = load_chunk_pos_ + glm::vec3(x, y, z);
-                        if (chunks_.find(pos) == chunks_.end())
-                            chunks_.insert({ pos, std::make_shared<Chunk>(game_, pos) });
-                    }
-                }
+                glm::vec3 pos = load_chunk_pos_ + offset;
+                if (chunks_.find(pos) == chunks_.end())
+                    chunks_.insert({ pos, std::make_shared<Chunk>(game_, pos, thread_pool_) });
             }
 
             for (auto& it : chunks_)

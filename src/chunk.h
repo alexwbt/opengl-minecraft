@@ -71,12 +71,12 @@ namespace game
         std::future<std::shared_ptr<ChunkGenerationData>> generate_future_;
 
     public:
-        Chunk(Game* game, const glm::vec3& coordinate)
+        Chunk(Game* game, const glm::vec3& coordinate, std::shared_ptr<util::ThreadPool> thread_pool)
             : Object(game), coordinate_(coordinate)
         {
             position_ = coordinate * (float)kSize;
 
-            generate_future_ = std::async(std::launch::async, std::bind(Chunk::Generate, position_, game));
+            generate_future_ = Generate(position_, game, std::move(thread_pool));
         }
 
         void Update() override
@@ -131,12 +131,20 @@ namespace game
         }
 
     private:
-        static std::shared_ptr<ChunkGenerationData> Generate(const glm::vec3& position, Game* game)
+        static std::future<std::shared_ptr<ChunkGenerationData>> Generate(const glm::vec3& position, Game* game, std::shared_ptr<util::ThreadPool> thread_pool)
         {
-            auto data = std::make_shared<ChunkGenerationData>();
-            GenerateData(position, data->chunk_data, game);
-            data->vertices = GenerateModel(data->chunk_data);
-            return data;
+            auto promise = std::make_shared<std::promise<std::shared_ptr<ChunkGenerationData>>>();
+
+            auto task = [=]()
+            {
+                auto data = std::make_shared<ChunkGenerationData>();
+                GenerateData(position, data->chunk_data, game);
+                data->vertices = GenerateModel(data->chunk_data);
+                promise->set_value(data);
+            };
+            thread_pool->AddTask(task);
+
+            return promise->get_future();
         }
 
         static bool Noise(const glm::vec3& block_pos)

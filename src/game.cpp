@@ -23,6 +23,7 @@ struct RenderInfo
 #include "skybox.h"
 
 #include "perlin-noise.h"
+#include "thread-pool.h"
 #include "chunk.h"
 #include "chunk-manager.h"
 #include "chunk-collider.h"

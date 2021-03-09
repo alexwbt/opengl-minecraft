@@ -115,6 +115,7 @@
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\skybox-shader.cpp" />
     <ClCompile Include="src\texture.cpp" />
+    <ClCompile Include="src\thread-pool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\debug-render.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\skybox.h" />
     <ClInclude Include="src\texture.h" />
+    <ClInclude Include="src\thread-pool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

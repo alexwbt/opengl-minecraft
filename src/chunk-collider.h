@@ -50,13 +50,8 @@ namespace game
         bool PointInBlock(const glm::vec3& pos, Game* game)
         {
             auto chunk = game->GetChunk(glm::floor(pos / (float)Chunk::kSize));
-            if (!chunk)
-            {
-                std::cout << "unloaded chunk" << std::endl;
-                return true;
-            }
+            if (!chunk) return true;
             glm::vec3 block_pos = glm::floor(pos - chunk->GetPos());
-            std::cout << block_pos.x << " " << block_pos.y << " " << block_pos.z << std::endl;
             return chunk->GetData(block_pos) >= 0;
         }
     };

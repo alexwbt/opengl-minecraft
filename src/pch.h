@@ -14,6 +14,8 @@
 #include <numeric>
 #include <mutex>
 #include <future>
+#include <condition_variable>
+#include <queue>
 
 #include <glad/glad.h>
 
@@ -21,3 +23,4 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/norm.hpp>
