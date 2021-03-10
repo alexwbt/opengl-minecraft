@@ -63,11 +63,11 @@ namespace game
 
         glm::vec3 coordinate_;
 
-        int data_[kSize][kSize][kSize]{};
+        uint8_t data_[kSize][kSize][kSize]{};
 
         struct ChunkData
         {
-            uint16_t data[kSize][kSize][kSize];
+            uint8_t data[kSize][kSize][kSize];
         };
         std::future<std::shared_ptr<ChunkData>> generate_future_;
         std::future<std::shared_ptr<std::vector<DefaultShader::Vertex>>> load_future_;
@@ -147,12 +147,12 @@ namespace game
             return false;
         }
 
-        uint16_t GetData(const glm::vec3& pos)
+        uint8_t GetData(const glm::vec3& pos)
         {
             return GetData((int)pos.x, (int)pos.y, (int)pos.z);
         }
 
-        uint16_t GetData(int x, int y, int z)
+        uint8_t GetData(int x, int y, int z)
         {
             return data_[x][y][z];
         }
@@ -231,7 +231,7 @@ namespace game
             return value > kScale * 0.5;
         }
 
-        static void GenerateData(const glm::vec3& position, uint16_t(*data)[kSize][kSize])
+        static void GenerateData(const glm::vec3& position, uint8_t(*data)[kSize][kSize])
         {
             for (int x = 0; x < kSize; x++)
                 for (int y = 0; y < kSize; y++)
@@ -257,7 +257,7 @@ namespace game
             }
         }
 
-        static std::shared_ptr<std::vector<DefaultShader::Vertex>> GenerateVertices(const glm::vec3& position, uint16_t(*data)[kSize][kSize])
+        static std::shared_ptr<std::vector<DefaultShader::Vertex>> GenerateVertices(const glm::vec3& position, uint8_t(*data)[kSize][kSize])
         {
             auto vertices = std::make_shared<std::vector<DefaultShader::Vertex>>();
             for (int x = 0; x < kSize; x++)
@@ -273,7 +273,7 @@ namespace game
                             int iy = y + (int)kCube[f * 6 * 8 + 4];
                             int iz = z + (int)kCube[f * 6 * 8 + 5];
 
-                            uint16_t block = 0;
+                            uint8_t block = 0;
                             if (!InBounds(ix, iy, iz))
                                 block = Noise(position + glm::vec3(ix, iy, iz)) ? 1 : 0;
                             else block = data[ix][iy][iz];
