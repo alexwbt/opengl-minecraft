@@ -113,7 +113,7 @@ namespace game
 
     void Game::Render(float width, float height)
     {
-        glm::mat4 projection = glm::perspective(glm::radians(camera_.fov), width / height, 0.001f, 1000.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera_.fov), width / height, 0.1f, 1000.0f);
         glm::mat4 pv = projection * camera_.view_matrix;
 
         const RenderInfo info{

@@ -43,7 +43,7 @@ namespace game
 
     public:
         ChunkManager(Game* game)
-            : game_(game), thread_pool_(std::make_shared<util::ThreadPool>(3))
+            : game_(game), thread_pool_(std::make_shared<util::ThreadPool>(4))
         {}
 
         std::shared_ptr<Chunk> GetChunk(const glm::vec3& pos)

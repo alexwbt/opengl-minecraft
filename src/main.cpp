@@ -44,7 +44,7 @@ int WinMain()
         auto game = std::make_shared<game::Game>();
 
         glfwWindowHint(GLFW_SAMPLES, 8);
-        auto window = glfw::GlfwManager::CreateWindow(800, 600, "OpenGL Minecraft");
+        auto window = glfw::GlfwManager::CreateWindow(1080, 720, "OpenGL Minecraft");
         GLFWwindow* glfw_window = glfw::GlfwManager::Get(window);
         auto handler = std::make_shared<Handler>(*game, window);
         glfw::GlfwManager::SetRenderHandler(window, handler);
