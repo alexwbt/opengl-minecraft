@@ -37,7 +37,7 @@ namespace game
             auto chunk = game->GetChunk(glm::floor(real_pos / (float)Chunk::kSize));
             if (!chunk) return true;
             glm::vec3 block_pos = glm::floor(real_pos - chunk->GetPos());
-            return chunk->GetData(block_pos) >= 0;
+            return chunk->GetData(block_pos) > 0;
         }
     };
 }

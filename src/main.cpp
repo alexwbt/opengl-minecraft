@@ -26,11 +26,16 @@ struct Handler : public glfw::GlfwRenderHandler, public glfw::GlfwListener
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         auto dimension = glfw::GlfwManager::GetWindowSize(window);
-        game.Render((float)dimension.width, (float)dimension.height);
+        if (dimension.width > 0 && dimension.height > 0)
+            game.Render((float)dimension.width, (float)dimension.height);
     }
 };
 
+#ifdef _DEBUG
 int main()
+#else
+int WinMain()
+#endif
 {
     try
     {

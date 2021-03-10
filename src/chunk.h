@@ -59,24 +59,28 @@ namespace game
         static constexpr int kSize = 32;
 
     private:
+        std::shared_ptr<util::ThreadPool> thread_pool_;
+
         glm::vec3 coordinate_;
 
         int data_[kSize][kSize][kSize]{};
 
-        struct ChunkGenerationData
+        struct ChunkData
         {
-            int chunk_data[kSize][kSize][kSize];
-            std::vector<DefaultShader::Vertex> vertices;
+            uint16_t data[kSize][kSize][kSize];
         };
-        std::future<std::shared_ptr<ChunkGenerationData>> generate_future_;
+        std::future<std::shared_ptr<ChunkData>> generate_future_;
+        std::future<std::shared_ptr<std::vector<DefaultShader::Vertex>>> load_future_;
+
+        bool generating_ = false;
+        bool loading_ = false;
+        bool loaded_ = false;
 
     public:
         Chunk(Game* game, const glm::vec3& coordinate, std::shared_ptr<util::ThreadPool> thread_pool)
-            : Object(game), coordinate_(coordinate)
+            : Object(game), coordinate_(coordinate), thread_pool_(std::move(thread_pool))
         {
             position_ = coordinate * (float)kSize;
-
-            generate_future_ = Generate(position_, game, std::move(thread_pool));
         }
 
         void Update() override
@@ -84,14 +88,24 @@ namespace game
             if (generate_future_.valid() &&
                 generate_future_.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
             {
-                auto data = generate_future_.get();
+                auto chunk_data = generate_future_.get();
                 for (int x = 0; x < kSize; x++)
                     for (int y = 0; y < kSize; y++)
                         for (int z = 0; z < kSize; z++)
-                            data_[x][y][z] = data->chunk_data[x][y][z];
+                            data_[x][y][z] = chunk_data->data[x][y][z];
+                generating_ = false;
+                Load();
+            }
+
+            if (load_future_.valid() &&
+                load_future_.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
+            {
+                auto vertices = load_future_.get();
                 auto texture = Game::GetTexture("chunk");
                 auto shader = Game::GetShader("default");
-                SetModel(std::make_shared<gl::Model>(data->vertices, std::move(shader), std::move(texture)));
+                SetModel(std::make_shared<gl::Model>(*vertices, std::move(shader), std::move(texture)));
+                loading_ = false;
+                loaded_ = true;
             }
         }
 
@@ -115,13 +129,6 @@ namespace game
             model_->Render(&uniforms);
         }
 
-        bool InBounds(int x, int y, int z)
-        {
-            return x >= 0 && x < kSize
-                && y >= 0 && y < kSize
-                && z >= 0 && z < kSize;
-        }
-
         bool Collides(const glm::vec3& min, const glm::vec3& max)
         {
             auto chunk_max = position_ + (float)kSize;
@@ -135,17 +142,17 @@ namespace game
             for (int x = (int)floor_min.x; x <= floor_max.x; x++)
                 for (int y = (int)floor_min.y; y <= floor_max.y; y++)
                     for (int z = (int)floor_min.z; z <= floor_max.z; z++)
-                        if (InBounds(x, y, z) && data_[x][y][z] >= 0)
+                        if (InBounds(x, y, z) && data_[x][y][z] > 0)
                             return true;
             return false;
         }
 
-        int GetData(const glm::vec3& pos)
+        uint16_t GetData(const glm::vec3& pos)
         {
             return GetData((int)pos.x, (int)pos.y, (int)pos.z);
         }
 
-        int GetData(int x, int y, int z)
+        uint16_t GetData(int x, int y, int z)
         {
             return data_[x][y][z];
         }
@@ -155,23 +162,57 @@ namespace game
             return position_;
         }
 
-    private:
-        static std::future<std::shared_ptr<ChunkGenerationData>> Generate(const glm::vec3& position, Game* game, std::shared_ptr<util::ThreadPool> thread_pool)
+        void Generate()
         {
-            auto promise = std::make_shared<std::promise<std::shared_ptr<ChunkGenerationData>>>();
-
-            auto task = [=]()
+            if (generating_) return;
+            generating_ = true;
+            auto promise = std::make_shared<std::promise<std::shared_ptr<ChunkData>>>();
+            auto& position = position_;
+            auto task = [promise, position]()
             {
-                auto data = std::make_shared<ChunkGenerationData>();
-                GenerateData(position, data->chunk_data, game);
-                data->vertices = GenerateModel(data->chunk_data);
-                promise->set_value(data);
+                auto chunk_data = std::make_shared<ChunkData>();
+                GenerateData(position, chunk_data->data);
+                promise->set_value(std::move(chunk_data));
             };
-            thread_pool->AddTask(task);
-
-            return promise->get_future();
+            thread_pool_->AddTask(task);
+            generate_future_ = promise->get_future();
         }
 
+        void Load()
+        {
+            if (generating_ || loaded_ || loading_) return;
+            loading_ = true;
+            auto promise = std::make_shared<std::promise<std::shared_ptr<std::vector<DefaultShader::Vertex>>>>();
+            auto& position = position_;
+            auto chunk_data = std::make_shared<ChunkData>();
+            for (int x = 0; x < kSize; x++)
+                for (int y = 0; y < kSize; y++)
+                    for (int z = 0; z < kSize; z++)
+                        chunk_data->data[x][y][z] = data_[x][y][z];
+            auto task = [promise, position, chunk_data]()
+            {
+                auto vertices = GenerateVertices(position, chunk_data->data);
+                promise->set_value(std::move(vertices));
+            };
+            thread_pool_->AddTask(task, true);
+            load_future_ = promise->get_future();
+        }
+
+        void Unload()
+        {
+            if (!loaded_ || loading_) return;
+            SetModel(nullptr);
+            loaded_ = false;
+        }
+
+        static bool InBounds(int x, int y, int z)
+        {
+            return x >= 0 && x < kSize
+                && y >= 0 && y < kSize
+                && z >= 0 && z < kSize;
+        }
+
+    private:
         static bool Noise(const glm::vec3& block_pos)
         {
             static util::PerlinNoise noise;
@@ -190,12 +231,12 @@ namespace game
             return value > kScale * 0.5;
         }
 
-        static void GenerateData(const glm::vec3& position, int(*data)[kSize][kSize], Game* game)
+        static void GenerateData(const glm::vec3& position, uint16_t(*data)[kSize][kSize])
         {
             for (int x = 0; x < kSize; x++)
                 for (int y = 0; y < kSize; y++)
                     for (int z = 0; z < kSize; z++)
-                        data[x][y][z] = Noise(position + glm::vec3(x, y, z)) ? 0 : -1;
+                        data[x][y][z] = Noise(position + glm::vec3(x, y, z)) ? 1 : 0;
 
             for (int x = 0; x < kSize; x++)
             {
@@ -203,12 +244,12 @@ namespace game
                 {
                     for (int y = kSize - 1; y >= 0; y--)
                     {
-                        if (data[x][y][z] == 0)
+                        if (data[x][y][z] == 1)
                         {
-                            if (y < kSize - 1 && data[x][y + 1][z] == -1)
-                                data[x][y][z] = 2;
+                            if (y < kSize - 1 && data[x][y + 1][z] == 0)
+                                data[x][y][z] = 3;
                             else if (y == kSize - 1)
-                                data[x][y][z] = Noise(position + glm::vec3(x, y + 1, z)) ? 0 : 2;
+                                data[x][y][z] = Noise(position + glm::vec3(x, y + 1, z)) ? 1 : 3;
                             break;
                         }
                     }
@@ -216,29 +257,34 @@ namespace game
             }
         }
 
-        static std::vector<DefaultShader::Vertex> GenerateModel(int(*data)[kSize][kSize])
+        static std::shared_ptr<std::vector<DefaultShader::Vertex>> GenerateVertices(const glm::vec3& position, uint16_t(*data)[kSize][kSize])
         {
-            std::vector<DefaultShader::Vertex> vertices;
+            auto vertices = std::make_shared<std::vector<DefaultShader::Vertex>>();
             for (int x = 0; x < kSize; x++)
             {
                 for (int y = 0; y < kSize; y++)
                 {
                     for (int z = 0; z < kSize; z++)
                     {
-                        if (data[x][y][z] < 0) continue;
+                        if (data[x][y][z] == 0) continue;
                         for (int f = 0; f < 6; f++)
                         {
                             int ix = x + (int)kCube[f * 6 * 8 + 3];
                             int iy = y + (int)kCube[f * 6 * 8 + 4];
                             int iz = z + (int)kCube[f * 6 * 8 + 5];
-                            bool oob = ix < 0 || ix >= kSize || iy < 0 || iy >= kSize || iz < 0 || iz >= kSize;
-                            if (!oob && (oob || data[ix][iy][iz] >= 0)) continue;
+
+                            uint16_t block = 0;
+                            if (!InBounds(ix, iy, iz))
+                                block = Noise(position + glm::vec3(ix, iy, iz)) ? 1 : 0;
+                            else block = data[ix][iy][iz];
+
+                            if (block > 0) continue;
                             for (int v = 0; v < 6; v++)
                             {
                                 int i = f * 6 + v;
-                                int tx = kTextures[data[x][y][z]][f] % 10;
-                                int ty = kTextures[data[x][y][z]][f] / 10;
-                                vertices.push_back({ {
+                                int tx = kTextures[data[x][y][z] - 1][f] % 10;
+                                int ty = kTextures[data[x][y][z] - 1][f] / 10;
+                                vertices->push_back({ {
                                         x + kCube[i * 8],
                                         y + kCube[i * 8 + 1],
                                         z + kCube[i * 8 + 2]

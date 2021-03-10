@@ -7,7 +7,7 @@ namespace util
         std::vector<std::shared_ptr<std::thread>> threads_;
         bool running_ = false;
 
-        std::queue<std::function<void()>> tasks_;
+        std::deque<std::function<void()>> tasks_;
 
         std::mutex mutex_;
         std::condition_variable cv_;
@@ -17,7 +17,7 @@ namespace util
 
         ~ThreadPool();
 
-        void AddTask(std::function<void()> task);
+        void AddTask(std::function<void()> task, bool priority = false);
 
     private:
         void RunThread(int index);

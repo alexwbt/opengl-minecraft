@@ -2,7 +2,8 @@
 
 namespace game
 {
-    static constexpr float kLoadRange = 3.0f;
+    static constexpr float kUnloadRange = 8.0f;
+    static constexpr float kLoadRange = 8.0f;
     static constexpr float kLoadRangeY = 2.0f;
 
     static std::list<glm::vec3> GetLoadOrder()
@@ -59,14 +60,23 @@ namespace game
             for (auto& offset : chunk_load_order)
             {
                 glm::vec3 pos = load_chunk_pos_ + offset;
-                if (chunks_.find(pos) == chunks_.end())
-                    chunks_.insert({ pos, std::make_shared<Chunk>(game_, pos, thread_pool_) });
+                auto pair = chunks_.find(pos);
+                if (pair == chunks_.end())
+                {
+                    auto chunk = std::make_shared<Chunk>(game_, pos, thread_pool_);
+                    chunk->Generate();
+                    chunks_.insert({ pos, chunk });
+                }
+                else pair->second->Load();
             }
 
             for (auto& it : chunks_)
             {
-                if (glm::distance(it.first, load_chunk_pos_) < kLoadRange)
+                float distance = glm::distance(it.first, load_chunk_pos_);
+                if (distance < kLoadRange)
                     it.second->Update();
+                else if (distance >= kUnloadRange)
+                    it.second->Unload();
             }
         }
 

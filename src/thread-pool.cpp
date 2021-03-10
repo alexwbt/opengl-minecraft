@@ -12,24 +12,29 @@ namespace util
 
     ThreadPool::~ThreadPool()
     {
-        running_ = false;
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            running_ = false;
+        }
         cv_.notify_all();
         for (auto& thread : threads_)
-            thread->join();
+            if (thread->joinable())
+                thread->join();
     }
 
-    void ThreadPool::AddTask(std::function<void()> task)
+    void ThreadPool::AddTask(std::function<void()> task, bool priority)
     {
         {
             std::lock_guard<std::mutex> lock(mutex_);
-            tasks_.push(task);
+            if (priority) tasks_.push_front(task);
+            else tasks_.push_back(task);
         }
         cv_.notify_all();
     }
 
     void ThreadPool::RunThread(int index)
     {
-        while (running_)
+        while (true)
         {
             std::function<void()> task;
             {
@@ -37,7 +42,7 @@ namespace util
                 cv_.wait(lock, [this]() { return !tasks_.empty() || !running_; });
                 if (!running_) break;
                 task = tasks_.front();
-                tasks_.pop();
+                tasks_.pop_front();
             }
             task();
         }
