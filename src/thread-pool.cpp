@@ -41,7 +41,7 @@ namespace util
                 std::unique_lock<std::mutex> lock(mutex_);
                 cv_.wait(lock, [this]() { return !tasks_.empty() || !running_; });
                 if (!running_) break;
-                task = tasks_.front();
+                task = std::move(tasks_.front());
                 tasks_.pop_front();
             }
             task();
