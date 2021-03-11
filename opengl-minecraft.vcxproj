@@ -118,6 +118,7 @@
     <ClCompile Include="src\thread-pool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\entity-controller.h" />
     <ClInclude Include="src\debug-render.h" />
     <ClInclude Include="src\debug-shader.h" />
     <ClInclude Include="src\entity.h" />

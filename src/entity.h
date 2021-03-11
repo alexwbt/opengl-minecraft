@@ -27,7 +27,7 @@ namespace game
             velocity_.y -= kGravity;
             glm::vec3 movement = velocity_;
             if (glm::length2(movements_) > 0)
-                movement += glm::normalize(movements_) * movement_speed_;
+                movement += glm::normalize(movements_) * movement_speed_ * (on_ground_ ? 1 : 0.5f);
             bool x_done = false;
             bool y_done = false;
             bool z_done = false;
@@ -79,6 +79,8 @@ namespace game
             }
 
             movements_ = glm::vec3(0);
+            if (on_ground_)
+                velocity_ *= glm::vec3(0.5f);
         }
 
         void Render(const RenderInfo& info) override

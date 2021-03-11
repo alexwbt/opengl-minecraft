@@ -29,6 +29,7 @@ struct RenderInfo
 #include "chunk-collider.h"
 
 #include "entity.h"
+#include "entity-controller.h"
 
 namespace game
 {
@@ -75,6 +76,8 @@ namespace game
     {
         debug_render_ = std::make_shared<DebugRender>(std::make_shared<DebugShader>());
 
+        controller_ = std::make_shared<EntityController>();
+
         SetSkybox(std::make_shared<game::Skybox>(this));
 
         gl::LightColor light_color{ glm::vec3(0.3f), glm::vec3(1.0f), glm::vec3(1.0f) };
@@ -83,30 +86,20 @@ namespace game
 
         auto player = std::make_shared<Entity>(this);
         player->SetPosition({ 0, 32, 0 });
-        player_id_ = player->id();
+        controller_->SetEntity(player);
+        following_id_ = player->id();
         Spawn(player);
     }
 
     void Game::Update(const std::vector<bool>& controls)
     {
         chunk_manager_->Update(camera_.position);
+        controller_->Update(camera_, controls);
         for (auto& entity : entities_)
         {
-            if (entity->id() == player_id_)
-            {
-                if (controls.size() < 5) return;
-                if (controls[0]) entity->Move(0.1f * camera_.front_side);
-                if (controls[1]) entity->Move(-0.1f * camera_.front_side);
-                if (controls[2]) entity->Move(0.1f * camera_.right);
-                if (controls[3]) entity->Move(-0.1f * camera_.right);
-                if (controls[4] && entity->on_ground()) entity->Push(glm::vec3(0, 0.35f, 0));
-                //if (controls[5]) entity->Move(-0.1f * glm::vec3(0, 1, 0));
-            }
             entity->Update();
-            if (entity->id() == player_id_)
-            {
+            if (entity->id() == following_id_)
                 camera_.position = entity->position();
-            }
         }
         camera_.Update();
     }

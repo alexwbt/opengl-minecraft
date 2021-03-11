@@ -128,5 +128,8 @@
     <ClInclude Include="src\thread-pool.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity-controller.h">
+      <Filter>Source Files\Game\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

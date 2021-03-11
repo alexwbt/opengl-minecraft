@@ -12,6 +12,7 @@ namespace game
     class ChunkManager;
     class Entity;
     class DebugRender;
+    class EntityController;
 
     class Game
     {
@@ -27,11 +28,10 @@ namespace game
 
     private:
         gl::CameraControl camera_;
+        uint32_t following_id_ = 0;
 
-        uint32_t player_id_;
-
+        std::shared_ptr<EntityController> controller_;
         std::shared_ptr<DebugRender> debug_render_;
-
         std::shared_ptr<ChunkManager> chunk_manager_;
 
         std::shared_ptr<Skybox> skybox_;
@@ -59,8 +59,8 @@ namespace game
         std::vector<std::shared_ptr<gl::Light>> GetLights();
         gl::CameraControl& GetCameraControl() { return camera_; }
         std::shared_ptr<Chunk> GetChunk(const glm::vec3& pos);
-        std::shared_ptr<DebugRender> debug_render() const { return debug_render_; }
 
+        std::shared_ptr<DebugRender> debug_render() const { return debug_render_; }
         gl::Camera camera() const { return camera_; }
     };
 }
