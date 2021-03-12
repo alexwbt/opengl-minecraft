@@ -37,7 +37,7 @@ namespace game
             if (controls[kJump])
             {
                 if (!holding_jump_ && entity_->on_ground())
-                    entity_->Push(glm::vec3(0, 0.35f, 0));
+                    entity_->Push(glm::vec3(0, 0.35f, 0) + entity_->movements() * 0.6f);
                 holding_jump_ = true;
             }
             else holding_jump_ = false;

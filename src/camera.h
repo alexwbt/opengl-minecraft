@@ -19,16 +19,18 @@ namespace gl
 
 		void Update()
 		{
+			auto yaw_radians = glm::radians(yaw);
+			auto pitch_radians = glm::radians(pitch);
+			auto cos_yaw_radians = glm::cos(yaw_radians);
+			auto sin_yaw_radians = glm::sin(yaw_radians);
+			auto cos_pitch_radians = glm::cos(pitch_radians);
+			auto sin_pitch_radians = glm::sin(pitch_radians);
 			front = glm::normalize(glm::vec3(
-				glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(pitch)),
-				glm::sin(glm::radians(pitch)),
-				glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(pitch))
+				cos_yaw_radians * cos_pitch_radians,
+				sin_pitch_radians,
+				sin_yaw_radians * cos_pitch_radians
 			));
-			front_side = glm::normalize(glm::vec3(
-				glm::cos(glm::radians(yaw)) * glm::cos(glm::radians(0.0f)),
-				glm::sin(glm::radians(0.0f)),
-				glm::sin(glm::radians(yaw)) * glm::cos(glm::radians(0.0f))
-			));
+			front_side = glm::normalize(glm::vec3(cos_yaw_radians, 0, sin_yaw_radians));
 			right = glm::normalize(glm::cross(front, glm::vec3(0, 1, 0)));
 			up = glm::normalize(glm::cross(right, front));
 

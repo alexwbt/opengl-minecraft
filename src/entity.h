@@ -95,5 +95,7 @@ namespace game
         {
             movements_ += movement;
         }
+
+        glm::vec3 movements() const { return movements_; }
     };
 }
