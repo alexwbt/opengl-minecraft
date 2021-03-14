@@ -213,16 +213,16 @@ namespace game
         }
 
     private:
-        static bool Noise(const glm::vec3& block_pos)
+        static bool Noise(const glm::vec3& chunk_pos, const glm::vec3& block_pos)
         {
             static util::PerlinNoise noise;
-            static constexpr int kOctaves = 4;
+            static constexpr int kOctaves = 3;
             static constexpr int kLacunarity = 2;
             static constexpr float kPersistance = 0.5f;
-            static constexpr float kScale = 40.0f;
+            static constexpr float kScale = 32.0f;
 
             glm::vec3 pos = block_pos / kScale;
-            double value = -block_pos.y;
+            double value = -block_pos.y * 2;
             for (int i = 0; i < kOctaves; i++)
             {
                 pos *= pow(kLacunarity, i) * pow(kPersistance, i);
@@ -236,7 +236,7 @@ namespace game
             for (int x = 0; x < kSize; x++)
                 for (int y = 0; y < kSize; y++)
                     for (int z = 0; z < kSize; z++)
-                        data[x][y][z] = Noise(position + glm::vec3(x, y, z)) ? 1 : 0;
+                        data[x][y][z] = Noise(position, position + glm::vec3(x, y, z)) ? 1 : 0;
 
             for (int x = 0; x < kSize; x++)
             {
@@ -249,7 +249,7 @@ namespace game
                             if (y < kSize - 1 && data[x][y + 1][z] == 0)
                                 data[x][y][z] = 3;
                             else if (y == kSize - 1)
-                                data[x][y][z] = Noise(position + glm::vec3(x, y + 1, z)) ? 1 : 3;
+                                data[x][y][z] = Noise(position, position + glm::vec3(x, y + 1, z)) ? 1 : 3;
                             break;
                         }
                     }
@@ -275,7 +275,7 @@ namespace game
 
                             uint8_t block = 0;
                             if (!InBounds(ix, iy, iz))
-                                block = Noise(position + glm::vec3(ix, iy, iz)) ? 1 : 0;
+                                block = Noise(position, position + glm::vec3(ix, iy, iz)) ? 1 : 0;
                             else block = data[ix][iy][iz];
 
                             if (block > 0) continue;
