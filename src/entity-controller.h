@@ -21,6 +21,8 @@ namespace game
 
         bool holding_jump_ = false;
 
+        static constexpr int kReach = 5 * 5;
+        bool looking_at_block_ = false;
         glm::vec3 looking_at_{0};
 
     public:
@@ -55,7 +57,7 @@ namespace game
         void UpdateLookingAt(const gl::Camera& camera)
         {
             glm::vec3 chunk_pos = glm::floor(camera.position / (float)Chunk::kSize);
-
+            
             std::vector<glm::vec3> blocks;
             for (int x = -1; x <= 1; x++)
             {
@@ -77,14 +79,19 @@ namespace game
 
             if (blocks.empty()) return;
 
-            looking_at_ = blocks[0];
+            looking_at_block_ = false;
             for (auto& block : blocks)
             {
-                if (glm::distance2(block, camera.position) < glm::distance2(looking_at_, camera.position))
+                auto dis = glm::distance2(block, camera.position);
+                if (dis <= kReach && (dis < glm::distance2(looking_at_, camera.position) || !looking_at_block_))
+                {
                     looking_at_ = block;
+                    looking_at_block_ = true;
+                }
             }
 
-            game_->debug_render()->DrawBox(looking_at_ - 0.5f, glm::vec3(1), {0, 0, 0}, 3.0f);
+            if (looking_at_block_)
+            game_->debug_render()->DrawBox(looking_at_ - 0.5f, glm::vec3(1), {0.1, 0.1, 0.1}, 2.0f);
         }
     };
 }
