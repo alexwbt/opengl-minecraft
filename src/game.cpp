@@ -3,6 +3,7 @@
 
 // gl
 #include "model.h"
+#include "ray.h"
 
 // shaders
 #include "default-shader.h"
@@ -76,7 +77,7 @@ namespace game
     {
         debug_render_ = std::make_shared<DebugRender>(std::make_shared<DebugShader>());
 
-        controller_ = std::make_shared<EntityController>();
+        controller_ = std::make_shared<EntityController>(this);
 
         SetSkybox(std::make_shared<game::Skybox>(this));
 

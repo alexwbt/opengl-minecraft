@@ -125,6 +125,7 @@
     <ClInclude Include="src\chunk-collider.h" />
     <ClInclude Include="src\chunk-manager.h" />
     <ClInclude Include="src\perlin-noise.h" />
+    <ClInclude Include="src\ray.h" />
     <ClInclude Include="src\skybox-shader.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\chunk.h" />

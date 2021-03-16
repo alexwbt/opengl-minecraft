@@ -2,7 +2,7 @@
 
 namespace game
 {
-    struct ChunkCollider
+    struct BoxChunkCollider
     {
         glm::vec3 n_bounds{ 0.3f, 1.8f, 0.3f };
         glm::vec3 p_bounds{ 0.3f, 0.1f, 0.3f };
@@ -30,7 +30,7 @@ namespace game
             return false;
         }
 
-    private:
+    /*private:
         bool PointInBlock(const glm::vec3& pos, Game* game)
         {
             auto real_pos = pos + 0.5f;
@@ -38,6 +38,6 @@ namespace game
             if (!chunk) return true;
             glm::vec3 block_pos = glm::floor(real_pos - chunk->GetPos());
             return chunk->GetData(block_pos) > 0;
-        }
+        }*/
     };
 }

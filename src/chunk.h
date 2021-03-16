@@ -147,6 +147,28 @@ namespace game
             return false;
         }
 
+        std::shared_ptr<std::vector<glm::vec3>> RayInertects(const glm::vec3& origin, const glm::vec3& dir)
+        {
+            auto real_origin = origin + 0.5f;
+            if (!gl::RayInertectsBox(real_origin, dir, position_, position_ + (float)kSize))
+                return nullptr;
+
+            auto list = std::make_shared<std::vector<glm::vec3>>();
+            for (int x = 0; x < kSize; x++)
+            {
+                for (int y = 0; y < kSize; y++)
+                {
+                    for (int z = 0; z < kSize; z++)
+                    {
+                        auto block_pos = position_ + glm::vec3(x, y, z);
+                        if (data_[x][y][z] > 0 && gl::RayInertectsBox(real_origin, dir, block_pos, block_pos + glm::vec3(1)))
+                            list->push_back(block_pos);
+                    }
+                }
+            }
+            return list;
+        }
+
         uint8_t GetData(const glm::vec3& pos)
         {
             return GetData((int)pos.x, (int)pos.y, (int)pos.z);

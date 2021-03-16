@@ -5,7 +5,7 @@ namespace game
     class Entity : public Object
     {
     private:
-        ChunkCollider collider_;
+        BoxChunkCollider collider_;
 
         static constexpr float kCollisionStep = 0.05f;
         static constexpr float kGravity = 0.03f;
