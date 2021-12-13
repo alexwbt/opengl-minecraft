@@ -34,7 +34,7 @@ namespace game
             }
         };
     private:
-        Game* game_;
+        std::weak_ptr<Game> game_;
         std::unordered_map<glm::vec3, std::shared_ptr<Chunk>, KeyFuncs, KeyFuncs> chunks_;
 
         glm::vec3 load_chunk_pos_{0};
@@ -42,7 +42,7 @@ namespace game
         std::shared_ptr<util::ThreadPool> thread_pool_;
 
     public:
-        ChunkManager(Game* game)
+        ChunkManager(const std::weak_ptr<Game> game)
             : game_(game), thread_pool_(std::make_shared<util::ThreadPool>(4))
         {}
 

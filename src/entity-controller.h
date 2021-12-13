@@ -15,7 +15,7 @@ namespace game
         };
 
     private:
-        Game* game_;
+        std::weak_ptr<Game> game_;
 
         std::shared_ptr<Entity> entity_ = nullptr;
 
@@ -23,10 +23,10 @@ namespace game
 
         static constexpr int kReach = 5 * 5;
         bool looking_at_block_ = false;
-        glm::vec3 looking_at_{0};
+        glm::vec3 looking_at_{ 0 };
 
     public:
-        EntityController(Game* game) : game_(game) {}
+        EntityController(const std::weak_ptr<Game>& game) : game_(game) {}
 
         void SetEntity(std::shared_ptr<Entity> entity)
         {
@@ -56,8 +56,11 @@ namespace game
 
         void UpdateLookingAt(const gl::Camera& camera)
         {
+            auto game = game_.lock();
+            if (!game) return;
+
             glm::vec3 chunk_pos = glm::floor(camera.position / (float)Chunk::kSize);
-            
+
             std::vector<glm::vec3> blocks;
             for (int x = -1; x <= 1; x++)
             {
@@ -66,7 +69,7 @@ namespace game
                     for (int z = -1; z <= 1; z++)
                     {
                         auto new_chunk_pos = chunk_pos + glm::vec3(x, y, z);
-                        auto chunk = game_->GetChunk(new_chunk_pos);
+                        auto chunk = game->GetChunk(new_chunk_pos);
                         if (chunk)
                         {
                             auto new_blocks = chunk->RayInertects(camera.position, camera.front);
@@ -91,7 +94,7 @@ namespace game
             }
 
             if (looking_at_block_)
-            game_->debug_render()->DrawBox(looking_at_ - 0.5f, glm::vec3(1), {0.1, 0.1, 0.1}, 2.0f);
+                game->debug_render()->DrawBox(looking_at_ - 0.5f, glm::vec3(1), { 0.1, 0.1, 0.1 }, 2.0f);
         }
     };
 }

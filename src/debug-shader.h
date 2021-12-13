@@ -4,10 +4,10 @@
 
 namespace game
 {
-    class DebugShader : public gl::Shader
+    class DebugShader : public gl::ShaderProgram
     {
     public:
-        struct Uniforms : public Shader::Uniforms
+        struct Uniforms : public ShaderProgram::Uniforms
         {
             glm::mat4 pv;
             glm::vec3 color;
@@ -21,7 +21,7 @@ namespace game
     public:
         DebugShader();
 
-        void Use(Shader::Uniforms* uniforms) override;
+        void Use(const ShaderProgram::Uniforms& uniforms) override;
         void EnableAttributes() override;
     };
 }

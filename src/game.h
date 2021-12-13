@@ -10,7 +10,7 @@ namespace game
     class Skybox;
     class Chunk;
     class ChunkManager;
-    class Entity;
+    class Object;
     class DebugRender;
     class EntityController;
 
@@ -18,12 +18,12 @@ namespace game
     {
     private:
         static std::map<std::string, std::shared_ptr<gl::Texture>> textures;
-        static std::map<std::string, std::shared_ptr<gl::Shader>> shaders;
+        static std::map<std::string, std::shared_ptr<gl::ShaderProgram>> shaders;
 
     public:
         static void InitShaders();
         static void InitTextures();
-        static std::shared_ptr<gl::Shader> GetShader(const std::string& name);
+        static std::shared_ptr<gl::ShaderProgram> GetShader(const std::string& name);
         static std::shared_ptr<gl::Texture> GetTexture(const std::string& name);
 
     private:
@@ -37,14 +37,14 @@ namespace game
         std::shared_ptr<Skybox> skybox_;
 
         std::list<std::shared_ptr<gl::Light>> lights_;
-        std::list<std::shared_ptr<Entity>> entities_;
+        std::list<std::shared_ptr<Object>> objects_;
 
         uint32_t next_id_ = 0;
 
     public:
         Game();
 
-        void Init();
+        void Init(const std::weak_ptr<Game>& game_ref);
 
         void Update(const std::vector<bool>& controls);
         void Render(float width, float height);
@@ -52,7 +52,7 @@ namespace game
         uint32_t NextId() { return ++next_id_; }
 
         void AddLight(std::shared_ptr<gl::Light> light);
-        void Spawn(std::shared_ptr<Entity> entity);
+        void Spawn(std::shared_ptr<Object> object);
 
         void SetSkybox(std::shared_ptr<Skybox> skybox);
 

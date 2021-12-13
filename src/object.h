@@ -7,7 +7,7 @@ namespace game
     class Object
     {
     protected:
-        Game* game_;
+        std::weak_ptr<Game> game_;
 
         uint32_t id_;
 
@@ -16,9 +16,12 @@ namespace game
         glm::vec3 position_;
 
     public:
-        Object(Game* game)
-            : game_(game), id_(game->NextId()), position_(0)
-        {}
+        Object(const std::weak_ptr<Game>& game)
+            : game_(game), id_(0), position_(0)
+        {
+            if (auto game_ptr = game.lock())
+                id_ = game_ptr->NextId();
+        }
 
         virtual ~Object() {}
 

@@ -4,10 +4,10 @@
 
 namespace game
 {
-    class DefaultShader : public gl::Shader
+    class DefaultShader : public gl::ShaderProgram
     {
     public:
-        struct Uniforms : public Shader::Uniforms
+        struct Uniforms : public ShaderProgram::Uniforms
         {
             std::vector<std::shared_ptr<gl::Light>> lights;
             glm::vec3 camera_pos;
@@ -28,7 +28,9 @@ namespace game
     public:
         DefaultShader();
 
-        void Use(Shader::Uniforms* uniforms) override;
         void EnableAttributes() override;
+
+    private:
+        void Use(const ShaderProgram::Uniforms& uniforms) override;
     };
 }

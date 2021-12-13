@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Game\Entity">
       <UniqueIdentifier>{26f13a82-66f9-4ddc-81e6-1062048609f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Object\Lightning">
+      <UniqueIdentifier>{936116ad-4ec2-43fd-895c-b23099640033}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -61,6 +64,9 @@
       <Filter>Source Files\Game\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\thread-pool.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
   </ItemGroup>
@@ -133,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="src\ray.h">
       <Filter>Source Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lightning.h">
+      <Filter>Source Files\Game\Object\Lightning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math.h">
+      <Filter>Source Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

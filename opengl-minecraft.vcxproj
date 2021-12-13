@@ -97,6 +97,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\debug-shader.cpp" />
+    <ClCompile Include="src\math.cpp" />
     <ClCompile Include="src\perlin-noise.cpp" />
     <ClCompile Include="src\default-shader.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -124,6 +125,8 @@
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\chunk-collider.h" />
     <ClInclude Include="src\chunk-manager.h" />
+    <ClInclude Include="src\lightning.h" />
+    <ClInclude Include="src\math.h" />
     <ClInclude Include="src\perlin-noise.h" />
     <ClInclude Include="src\ray.h" />
     <ClInclude Include="src\skybox-shader.h" />

@@ -50,7 +50,7 @@ namespace game
         };
 
     public:
-        Skybox(Game* game)
+        Skybox(const std::weak_ptr<Game>& game)
             : Object(game)
         {
             std::vector<SkyboxShader::Vertex> vertices;
@@ -62,8 +62,11 @@ namespace game
                     kSkyboxVertices[i + 2]} });
 
             auto shader = Game::GetShader("skybox");
-            auto texture = Game::GetTexture("skybox");
-            SetModel(std::make_shared<gl::Model>(vertices, std::move(shader), std::move(texture)));
+
+            auto textures = std::make_shared<std::vector<std::shared_ptr<gl::Texture>>>(1);
+            textures->at(0) = Game::GetTexture("skybox");
+
+            SetModel(std::make_shared<gl::Model>(vertices, std::move(shader), textures));
         }
 
         void Render(const RenderInfo& info) override
@@ -78,7 +81,7 @@ namespace game
 
             glDepthMask(GL_FALSE);
             glCullFace(GL_BACK);
-            model_->Render(&uniforms);
+            model_->Render(uniforms);
             glCullFace(GL_FRONT);
             glDepthMask(GL_TRUE);
         }

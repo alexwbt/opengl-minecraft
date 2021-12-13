@@ -17,6 +17,6 @@ namespace gl
         Texture(uint32_t id, GLenum type);
         ~Texture();
 
-        void Use();
+        void Use(int i);
     };
 }

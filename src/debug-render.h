@@ -67,7 +67,7 @@ namespace game
                 DebugShader::Uniforms uniforms{};
                 uniforms.pv = info.pv;
                 uniforms.color = lines_[i].color;
-                shader_->Use(&uniforms);
+                shader_->Use(uniforms);
                 glLineWidth(lines_[i].width);
                 glDrawArrays(GL_LINES, 0, 2);
             }

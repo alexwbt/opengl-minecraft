@@ -4,10 +4,10 @@
 
 namespace game
 {
-    class SkyboxShader : public gl::Shader
+    class SkyboxShader : public gl::ShaderProgram
     {
     public:
-        struct Uniforms : public Shader::Uniforms
+        struct Uniforms : public ShaderProgram::Uniforms
         {
             glm::mat4 pv;
             int skybox_map;
@@ -21,7 +21,7 @@ namespace game
     public:
         SkyboxShader();
 
-        void Use(Shader::Uniforms* uniforms) override;
+        void Use(const ShaderProgram::Uniforms& uniforms) override;
         void EnableAttributes() override;
     };
 }

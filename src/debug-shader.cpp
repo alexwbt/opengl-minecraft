@@ -3,19 +3,27 @@
 
 namespace game
 {
-    DebugShader::DebugShader()
-        : Shader("res/shaders/debug.vs", "res/shaders/debug.fs")
-    {}
+    DebugShader::DebugShader() : ShaderProgram(
+        { {GL_VERTEX_SHADER, "res/shaders/debug.vs"},
+        {GL_FRAGMENT_SHADER, "res/shaders/debug.fs"} }
+    ) {}
 
-    void DebugShader::Use(Shader::Uniforms* uniforms)
+    void DebugShader::Use(const ShaderProgram::Uniforms& uniforms)
     {
         UseProgram();
 
-        auto data = dynamic_cast<Uniforms*>(uniforms);
-        if (!data) return;
+        try
+        {
+            const auto& data = dynamic_cast<const Uniforms&>(uniforms);
 
-        SetMat4("pv", data->pv);
-        SetVec3("color", data->color);
+            SetMat4("pv", data.pv);
+            SetVec3("color", data.color);
+        }
+        catch (const std::bad_cast& exception)
+        {
+            std::cout << "Failed to cast debug shader uniform." << std::endl;
+            std::cout << exception.what() << std::endl;
+        }
     }
 
     void DebugShader::EnableAttributes()

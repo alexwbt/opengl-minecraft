@@ -7,7 +7,7 @@ namespace game
         glm::vec3 n_bounds{ 0.3f, 1.8f, 0.3f };
         glm::vec3 p_bounds{ 0.3f, 0.1f, 0.3f };
 
-        bool Collides(const glm::vec3& origin, Game* game)
+        bool Collides(const glm::vec3& origin, const std::shared_ptr<Game>& game)
         {
             glm::vec3 pos = origin + 0.5f;
             glm::vec3 min = pos - n_bounds;

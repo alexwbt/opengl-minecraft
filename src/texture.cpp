@@ -78,9 +78,12 @@ namespace gl
         glDeleteTextures(1, &id_);
     }
 
-    void Texture::Use()
+    void Texture::Use(int i)
     {
-        glActiveTexture(GL_TEXTURE0);
+        if (i >= 32)
+            return;
+
+        glActiveTexture(GL_TEXTURE0 + i);
         glBindTexture(type_, id_);
     }
 }

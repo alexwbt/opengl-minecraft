@@ -4,25 +4,36 @@
 
 namespace gl
 {
-    class Shader
+    class Texture;
+
+    class ShaderProgram
     {
     public:
-        struct Uniforms {
+        struct Uniforms
+        {
             virtual ~Uniforms() {}
         };
-        struct Vertex {
+
+        struct Vertex
+        {
             virtual ~Vertex() {}
+        };
+
+        struct Shader
+        {
+            GLenum type;
+            std::string source;
         };
 
     private:
         GLuint program_id_;
 
     public:
-        Shader(const std::string& vertex, const std::string& fragment);
-        virtual ~Shader();
+        ShaderProgram(const std::vector<Shader>& shaders);
+        virtual ~ShaderProgram();
 
-        virtual void Use(Uniforms* uniforms) = 0;
         virtual void EnableAttributes() = 0;
+        virtual void Use(const Uniforms& uniforms) = 0;
 
     protected:
         void SetBool(const std::string& name, bool value) const;

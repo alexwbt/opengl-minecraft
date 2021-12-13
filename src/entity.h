@@ -18,12 +18,15 @@ namespace game
         bool on_ground_ = false;
 
     public:
-        Entity(Game* game) : Object(game) {}
+        Entity(const std::weak_ptr<Game>& game) : Object(game) {}
 
         bool on_ground() const { return on_ground_; }
 
         void Update() override
         {
+            auto game = game_.lock();
+            if (!game) return;
+
             velocity_.y -= kGravity;
             glm::vec3 movement = velocity_;
             if (glm::length2(movements_) > 0)
@@ -37,7 +40,7 @@ namespace game
                 {
                     float step = movement.x > 0 ? kCollisionStep : -kCollisionStep;
                     position_.x += step;
-                    if (collider_.Collides(position_, game_))
+                    if (collider_.Collides(position_, game))
                     {
                         position_.x -= step;
                         x_done = true;
@@ -52,7 +55,7 @@ namespace game
                     on_ground_ = false;
                     float step = movement.y > 0 ? kCollisionStep : -kCollisionStep;
                     position_.y += step;
-                    if (collider_.Collides(position_, game_))
+                    if (collider_.Collides(position_, game))
                     {
                         position_.y -= step;
                         y_done = true;
@@ -67,7 +70,7 @@ namespace game
                 {
                     float step = movement.z > 0 ? kCollisionStep : -kCollisionStep;
                     position_.z += step;
-                    if (collider_.Collides(position_, game_))
+                    if (collider_.Collides(position_, game))
                     {
                         position_.z -= step;
                         z_done = true;

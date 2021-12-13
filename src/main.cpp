@@ -56,7 +56,7 @@ int WinMain()
 
         game::Game::InitTextures();
         game::Game::InitShaders();
-        game->Init();
+        game->Init(game);
 
         glEnable(GL_CULL_FACE);
         glFrontFace(GL_CCW);

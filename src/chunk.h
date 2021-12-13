@@ -77,7 +77,7 @@ namespace game
         bool loaded_ = false;
 
     public:
-        Chunk(Game* game, const glm::vec3& coordinate, std::shared_ptr<util::ThreadPool> thread_pool)
+        Chunk(const std::weak_ptr<Game> game, const glm::vec3& coordinate, std::shared_ptr<util::ThreadPool> thread_pool)
             : Object(game), coordinate_(coordinate), thread_pool_(std::move(thread_pool))
         {
             position_ = coordinate * (float)kSize;
@@ -101,9 +101,13 @@ namespace game
                 load_future_.wait_for(std::chrono::seconds(0)) == std::future_status::ready)
             {
                 auto vertices = load_future_.get();
-                auto texture = Game::GetTexture("chunk");
+
                 auto shader = Game::GetShader("default");
-                SetModel(std::make_shared<gl::Model>(*vertices, std::move(shader), std::move(texture)));
+
+                auto textures = std::make_shared<std::vector<std::shared_ptr<gl::Texture>>>(1);
+                textures->at(0) = Game::GetTexture("chunk");
+
+                SetModel(std::make_shared<gl::Model>(*vertices, std::move(shader), textures));
                 loading_ = false;
                 loaded_ = true;
             }
@@ -111,12 +115,15 @@ namespace game
 
         void Render(const RenderInfo& info) override
         {
+            auto game = game_.lock();
+            if (!game) return;
+
             if (!model_) return;
             glm::mat4 model_matrix = glm::mat4(1.0f);
             model_matrix = glm::translate(model_matrix, position_);
 
-            auto lights = game_->GetLights();
-            auto pos = game_->camera().position;
+            auto lights = game->GetLights();
+            auto pos = game->camera().position;
 
             DefaultShader::Uniforms uniforms;
             uniforms.lights = lights;
@@ -126,7 +133,7 @@ namespace game
             uniforms.shininess = 16.0f;
             uniforms.mvp = info.pv * model_matrix;
             uniforms.model = model_matrix;
-            model_->Render(&uniforms);
+            model_->Render(uniforms);
         }
 
         bool Collides(const glm::vec3& min, const glm::vec3& max)
