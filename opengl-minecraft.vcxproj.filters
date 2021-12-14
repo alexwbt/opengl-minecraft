@@ -16,17 +16,17 @@
     <Filter Include="Source Files\Game\Shaders">
       <UniqueIdentifier>{91197a1b-cede-4892-aebf-8704fa53039b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Chunk">
-      <UniqueIdentifier>{a9585936-b4b4-409a-b8fd-8be3e7c0a9cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Game\Entity">
       <UniqueIdentifier>{5cfa7672-eb0c-49c5-8fd3-2bd92d9edd98}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game\Entity\Entities">
       <UniqueIdentifier>{e977e0fc-2b92-47a8-9511-94b4edad02ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Object">
+    <Filter Include="Source Files\Game\Entity\Entities\Object">
       <UniqueIdentifier>{26f13a82-66f9-4ddc-81e6-1062048609f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Entity\Entities\Chunk">
+      <UniqueIdentifier>{a9585936-b4b4-409a-b8fd-8be3e7c0a9cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -114,16 +114,16 @@
       <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="src\chunk-manager.h">
-      <Filter>Source Files\Game\Chunk</Filter>
+      <Filter>Source Files\Game\Entity\Entities\Chunk</Filter>
     </ClInclude>
     <ClInclude Include="src\chunk.h">
-      <Filter>Source Files\Game\Chunk</Filter>
+      <Filter>Source Files\Game\Entity\Entities\Chunk</Filter>
     </ClInclude>
     <ClInclude Include="src\chunk-collider.h">
-      <Filter>Source Files\Game\Chunk</Filter>
+      <Filter>Source Files\Game\Entity\Entities\Chunk</Filter>
     </ClInclude>
     <ClInclude Include="src\object.h">
-      <Filter>Source Files\Game\Object</Filter>
+      <Filter>Source Files\Game\Entity\Entities\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\debug-render.h">
       <Filter>Source Files\Game</Filter>
@@ -135,7 +135,7 @@
       <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="src\object-controller.h">
-      <Filter>Source Files\Game\Object</Filter>
+      <Filter>Source Files\Game\Entity\Entities\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\ray.h">
       <Filter>Source Files\GL</Filter>
