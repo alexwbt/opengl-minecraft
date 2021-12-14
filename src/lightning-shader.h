@@ -4,24 +4,26 @@
 
 namespace game
 {
-    class SkyboxShader : public gl::ShaderProgram
+    class LightningShader : public gl::ShaderProgram
     {
     public:
         struct Uniforms : public ShaderProgram::Uniforms
         {
             glm::mat4 pv;
-            int skybox_map;
+            glm::vec3 color;
         };
 
-        struct Vertex final
+        struct Vertex
         {
             glm::vec3 pos;
         };
 
     public:
-        SkyboxShader();
+        LightningShader();
 
-        void Use(const ShaderProgram::Uniforms& uniforms) override;
         void EnableAttributes() override;
+
+    private:
+        void Use(const ShaderProgram::Uniforms& uniforms) override;
     };
 }

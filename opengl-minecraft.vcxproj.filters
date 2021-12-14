@@ -45,7 +45,7 @@
     <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\default-shader.cpp">
+    <ClCompile Include="src\phong-shader.cpp">
       <Filter>Source Files\Game\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\shader.cpp">
@@ -68,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="src\math.cpp">
       <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lightning-shader.cpp">
+      <Filter>Source Files\Game\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,7 +98,7 @@
     <ClInclude Include="src\file.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="src\default-shader.h">
+    <ClInclude Include="src\phong-shader.h">
       <Filter>Source Files\Game\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shader.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="src\math.h">
       <Filter>Source Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lightning-shader.h">
+      <Filter>Source Files\Game\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

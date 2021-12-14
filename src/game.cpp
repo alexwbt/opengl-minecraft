@@ -6,11 +6,12 @@
 #include "ray.h"
 
 // shaders
-#include "default-shader.h"
+#include "phong-shader.h"
 #include "skybox-shader.h"
 #include "debug-shader.h"
+#include "lightning-shader.h"
 
-struct RenderInfo
+struct RenderInfo final
 {
     glm::mat4 projection;
     glm::mat4 view;
@@ -35,19 +36,20 @@ struct RenderInfo
 
 namespace game
 {
-    std::map<std::string, std::shared_ptr<gl::Texture>> Game::textures;
-    std::map<std::string, std::shared_ptr<gl::ShaderProgram>> Game::shaders;
+    std::map<Textures, std::shared_ptr<gl::Texture>> Game::textures;
+    std::map<Shaders, std::shared_ptr<gl::ShaderProgram>> Game::shaders;
 
     void Game::InitShaders()
     {
-        shaders.insert({ "default", std::make_shared<DefaultShader>() });
-        shaders.insert({ "skybox", std::make_shared<SkyboxShader>() });
-        shaders.insert({ "debug", std::make_shared<DebugShader>() });
+        shaders.insert({ Shaders::kPhong, std::make_shared<PhongShader>() });
+        shaders.insert({ Shaders::kSkybox, std::make_shared<SkyboxShader>() });
+        shaders.insert({ Shaders::kDebug, std::make_shared<DebugShader>() });
+        shaders.insert({ Shaders::kLightning, std::make_shared<LightningShader>() });
     }
 
     void Game::InitTextures()
     {
-        textures.insert({ "chunk", gl::Texture::Load2DTexture("res/textures/chunk.png", GL_RGBA) });
+        textures.insert({ Textures::kChunk, gl::Texture::Load2DTexture("res/textures/chunk.png", GL_RGBA) });
 
         std::vector<std::string> skybox_paths{
             "res/textures/void/right.png",
@@ -57,17 +59,17 @@ namespace game
             "res/textures/void/front.png",
             "res/textures/void/back.png"
         };
-        textures.insert({ "skybox", gl::Texture::LoadCubemapTexture(skybox_paths) });
+        textures.insert({ Textures::kSkybox, gl::Texture::LoadCubemapTexture(skybox_paths) });
     }
 
-    std::shared_ptr<gl::ShaderProgram> Game::GetShader(const std::string& name)
+    std::shared_ptr<gl::ShaderProgram> Game::GetShader(Shaders shader)
     {
-        return shaders.find(name)->second;
+        return shaders.find(shader)->second;
     }
 
-    std::shared_ptr<gl::Texture> Game::GetTexture(const std::string& name)
+    std::shared_ptr<gl::Texture> Game::GetTexture(Textures texture)
     {
-        return textures.find(name)->second;
+        return textures.find(texture)->second;
     }
 
     Game::Game() :

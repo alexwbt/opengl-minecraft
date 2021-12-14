@@ -2,7 +2,7 @@
 
 namespace util
 {
-    class ThreadPool
+    class ThreadPool final
     {
         std::vector<std::shared_ptr<std::thread>> threads_;
         bool running_ = false;

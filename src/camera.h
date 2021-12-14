@@ -17,6 +17,8 @@ namespace gl
 			Update();
 		}
 
+		virtual ~Camera() {}
+
 		void Update()
 		{
 			auto yaw_radians = glm::radians(yaw);

@@ -13,7 +13,7 @@ namespace game
             glm::vec3 color;
         };
 
-        struct Vertex
+        struct Vertex final
         {
             glm::vec3 pos;
         };

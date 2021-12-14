@@ -97,9 +97,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\debug-shader.cpp" />
+    <ClCompile Include="src\lightning-shader.cpp" />
     <ClCompile Include="src\math.cpp" />
     <ClCompile Include="src\perlin-noise.cpp" />
-    <ClCompile Include="src\default-shader.cpp" />
+    <ClCompile Include="src\phong-shader.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\glad.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -125,6 +126,7 @@
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\chunk-collider.h" />
     <ClInclude Include="src\chunk-manager.h" />
+    <ClInclude Include="src\lightning-shader.h" />
     <ClInclude Include="src\lightning.h" />
     <ClInclude Include="src\math.h" />
     <ClInclude Include="src\perlin-noise.h" />
@@ -132,7 +134,7 @@
     <ClInclude Include="src\skybox-shader.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\chunk.h" />
-    <ClInclude Include="src\default-shader.h" />
+    <ClInclude Include="src\phong-shader.h" />
     <ClInclude Include="src\file.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\glfw-manager.h" />

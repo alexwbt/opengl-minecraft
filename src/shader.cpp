@@ -6,7 +6,7 @@
 
 namespace gl
 {
-    GLuint CreateShader(const char* code, GLenum type)
+    GLuint ShaderProgram::CreateShader(const char* code, GLenum type)
     {
         GLuint id = glCreateShader(type);
 
@@ -74,40 +74,6 @@ namespace gl
     void ShaderProgram::SetMat2(const std::string& name, const glm::mat2& mat) const { glUniformMatrix2fv(glGetUniformLocation(program_id_, name.c_str()), 1, GL_FALSE, &mat[0][0]); }
     void ShaderProgram::SetMat3(const std::string& name, const glm::mat3& mat) const { glUniformMatrix3fv(glGetUniformLocation(program_id_, name.c_str()), 1, GL_FALSE, &mat[0][0]); }
     void ShaderProgram::SetMat4(const std::string& name, const glm::mat4& mat) const { glUniformMatrix4fv(glGetUniformLocation(program_id_, name.c_str()), 1, GL_FALSE, &mat[0][0]); }
-
-    void ShaderProgram::UseLight(std::shared_ptr<gl::Light> light, int i)
-    {
-        switch (light->type)
-        {
-        case gl::LightType::SUN:
-            SetVec3(("sunLights[" + std::to_string(i) + "].direction"), light->direction);
-            SetVec3(("sunLights[" + std::to_string(i) + "].ambient"), light->ambient);
-            SetVec3(("sunLights[" + std::to_string(i) + "].diffuse"), light->diffuse);
-            SetVec3(("sunLights[" + std::to_string(i) + "].specular"), light->specular);
-            break;
-        case gl::LightType::POINT:
-            SetVec3(("lights[" + std::to_string(i) + "].position"), light->position);
-            SetVec3(("lights[" + std::to_string(i) + "].ambient"), light->ambient);
-            SetVec3(("lights[" + std::to_string(i) + "].diffuse"), light->diffuse);
-            SetVec3(("lights[" + std::to_string(i) + "].specular"), light->specular);
-            SetFloat(("lights[" + std::to_string(i) + "].constant"), light->constant);
-            SetFloat(("lights[" + std::to_string(i) + "].linear"), light->linear);
-            SetFloat(("lights[" + std::to_string(i) + "].quadratic"), light->quadratic);
-            break;
-        case gl::LightType::SPOT:
-            SetVec3(("spotLights[" + std::to_string(i) + "].direction"), light->direction);
-            SetVec3(("spotLights[" + std::to_string(i) + "].position"), light->position);
-            SetVec3(("spotLights[" + std::to_string(i) + "].ambient"), light->ambient);
-            SetVec3(("spotLights[" + std::to_string(i) + "].diffuse"), light->diffuse);
-            SetVec3(("spotLights[" + std::to_string(i) + "].specular"), light->specular);
-            SetFloat(("spotLights[" + std::to_string(i) + "].constant"), light->constant);
-            SetFloat(("spotLights[" + std::to_string(i) + "].linear"), light->linear);
-            SetFloat(("spotLights[" + std::to_string(i) + "].quadratic"), light->quadratic);
-            SetFloat(("spotLights[" + std::to_string(i) + "].cutOff"), light->cutOff);
-            SetFloat(("spotLights[" + std::to_string(i) + "].outerCutOff"), light->outerCutOff);
-            break;
-        }
-    }
 
     void ShaderProgram::UseProgram()
     {

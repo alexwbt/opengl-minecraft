@@ -14,17 +14,31 @@ namespace game
     class DebugRender;
     class EntityController;
 
-    class Game
+    enum class Shaders : uint32_t
+    {
+        kDebug,
+        kSkybox,
+        kPhong,
+        kLightning
+    };
+
+    enum class Textures : uint32_t
+    {
+        kChunk,
+        kSkybox
+    };
+
+    class Game final
     {
     private:
-        static std::map<std::string, std::shared_ptr<gl::Texture>> textures;
-        static std::map<std::string, std::shared_ptr<gl::ShaderProgram>> shaders;
+        static std::map<Textures, std::shared_ptr<gl::Texture>> textures;
+        static std::map<Shaders, std::shared_ptr<gl::ShaderProgram>> shaders;
 
     public:
         static void InitShaders();
         static void InitTextures();
-        static std::shared_ptr<gl::ShaderProgram> GetShader(const std::string& name);
-        static std::shared_ptr<gl::Texture> GetTexture(const std::string& name);
+        static std::shared_ptr<gl::ShaderProgram> GetShader(Shaders shader);
+        static std::shared_ptr<gl::Texture> GetTexture(Textures texture);
 
     private:
         gl::CameraControl camera_;

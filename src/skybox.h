@@ -61,10 +61,10 @@ namespace game
                     kSkyboxVertices[i + 1],
                     kSkyboxVertices[i + 2]} });
 
-            auto shader = Game::GetShader("skybox");
+            auto shader = Game::GetShader(Shaders::kSkybox);
 
             auto textures = std::make_shared<std::vector<std::shared_ptr<gl::Texture>>>(1);
-            textures->at(0) = Game::GetTexture("skybox");
+            textures->at(0) = Game::GetTexture(Textures::kSkybox);
 
             SetModel(std::make_shared<gl::Model>(vertices, std::move(shader), textures));
         }

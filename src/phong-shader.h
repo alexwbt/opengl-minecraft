@@ -4,7 +4,7 @@
 
 namespace game
 {
-    class DefaultShader : public gl::ShaderProgram
+    class PhongShader : public gl::ShaderProgram
     {
     public:
         struct Uniforms : public ShaderProgram::Uniforms
@@ -18,7 +18,7 @@ namespace game
             glm::mat4 model;
         };
 
-        struct Vertex
+        struct Vertex final
         {
             glm::vec3 pos;
             glm::vec3 normal;
@@ -26,11 +26,12 @@ namespace game
         };
 
     public:
-        DefaultShader();
+        PhongShader();
 
         void EnableAttributes() override;
 
     private:
+        void UseLight(std::shared_ptr<gl::Light> light, int i);
         void Use(const ShaderProgram::Uniforms& uniforms) override;
     };
 }

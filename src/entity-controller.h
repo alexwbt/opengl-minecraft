@@ -2,7 +2,7 @@
 
 namespace game
 {
-    class EntityController
+    class EntityController final
     {
     public:
         enum Control

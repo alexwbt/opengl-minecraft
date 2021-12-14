@@ -2,11 +2,11 @@
 
 namespace game
 {
-    class DebugRender
+    class DebugRender final
     {
         std::shared_ptr<DebugShader> shader_;
 
-        struct Line
+        struct Line final
         {
             glm::vec3 a, b, color;
             float width;

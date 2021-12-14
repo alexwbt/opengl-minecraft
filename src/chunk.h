@@ -65,12 +65,12 @@ namespace game
 
         uint8_t data_[kSize][kSize][kSize]{};
 
-        struct ChunkData
+        struct ChunkData final
         {
             uint8_t data[kSize][kSize][kSize];
         };
         std::future<std::shared_ptr<ChunkData>> generate_future_;
-        std::future<std::shared_ptr<std::vector<DefaultShader::Vertex>>> load_future_;
+        std::future<std::shared_ptr<std::vector<PhongShader::Vertex>>> load_future_;
 
         bool generating_ = false;
         bool loading_ = false;
@@ -102,10 +102,10 @@ namespace game
             {
                 auto vertices = load_future_.get();
 
-                auto shader = Game::GetShader("default");
+                auto shader = Game::GetShader(Shaders::kPhong);
 
                 auto textures = std::make_shared<std::vector<std::shared_ptr<gl::Texture>>>(1);
-                textures->at(0) = Game::GetTexture("chunk");
+                textures->at(0) = Game::GetTexture(Textures::kChunk);
 
                 SetModel(std::make_shared<gl::Model>(*vertices, std::move(shader), textures));
                 loading_ = false;
@@ -125,7 +125,7 @@ namespace game
             auto lights = game->GetLights();
             auto pos = game->camera().position;
 
-            DefaultShader::Uniforms uniforms;
+            PhongShader::Uniforms uniforms;
             uniforms.lights = lights;
             uniforms.camera_pos = pos;
             uniforms.diffuse_map = 0;
@@ -211,7 +211,7 @@ namespace game
         {
             if (generating_ || loaded_ || loading_) return;
             loading_ = true;
-            auto promise = std::make_shared<std::promise<std::shared_ptr<std::vector<DefaultShader::Vertex>>>>();
+            auto promise = std::make_shared<std::promise<std::shared_ptr<std::vector<PhongShader::Vertex>>>>();
             auto& position = position_;
             auto chunk_data = std::make_shared<ChunkData>();
             for (int x = 0; x < kSize; x++)
@@ -288,9 +288,9 @@ namespace game
             }
         }
 
-        static std::shared_ptr<std::vector<DefaultShader::Vertex>> GenerateVertices(const glm::vec3& position, uint8_t(*data)[kSize][kSize])
+        static std::shared_ptr<std::vector<PhongShader::Vertex>> GenerateVertices(const glm::vec3& position, uint8_t(*data)[kSize][kSize])
         {
-            auto vertices = std::make_shared<std::vector<DefaultShader::Vertex>>();
+            auto vertices = std::make_shared<std::vector<PhongShader::Vertex>>();
             for (int x = 0; x < kSize; x++)
             {
                 for (int y = 0; y < kSize; y++)

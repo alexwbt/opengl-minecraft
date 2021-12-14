@@ -16,7 +16,6 @@ namespace game
         float branchRad_;
         float branchLength_;
 
-
         std::vector<glm::vec3> points_;
         std::vector<std::unique_ptr<Lightning>> child_branches_;
 
@@ -72,7 +71,7 @@ namespace game
                 new_points.clear();
                 mid_points.clear();
             }
-
+            long a;
             std::vector<DebugShader::Vertex> vertices(points_.size());
             std::vector<uint32_t> indices(points_.size() * 2 - 2);
             for (int i = 0; i < points_.size(); ++i)
@@ -86,13 +85,13 @@ namespace game
                 }
             }
 
-            auto shader = Game::GetShader("debug");
+            auto shader = Game::GetShader(Shaders::kLightning);
             SetModel(std::make_shared<gl::Model>(std::move(vertices), std::move(indices), std::move(shader), nullptr, GL_LINES));
         }
 
         void Update() override
         {
-            Generate();
+            //Generate();
         }
 
         void Render(const RenderInfo& info) override
@@ -101,7 +100,7 @@ namespace game
             glm::mat4 model_matrix = glm::mat4(1.0f);
             model_matrix = glm::translate(model_matrix, position_);
 
-            DebugShader::Uniforms uniforms;
+            LightningShader::Uniforms uniforms;
             uniforms.pv = info.pv;
             uniforms.color = glm::vec3(1, 0, 0);
             model_->Render(uniforms);

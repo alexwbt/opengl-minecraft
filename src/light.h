@@ -2,19 +2,22 @@
 
 namespace gl
 {
-    enum class LightType {
+    enum class LightType
+    {
         SUN, POINT, SPOT
     };
 
-    struct LightColor {
+    struct LightColor final
+    {
         glm::vec3 ambient, diffuse, specular;
     };
 
-    struct LightStrength {
+    struct LightStrength final
+    {
         float constant, linear, quadratic;
     };
 
-    struct Light
+    struct Light final
     {
         LightType type;
         glm::vec3 position{ 0 };

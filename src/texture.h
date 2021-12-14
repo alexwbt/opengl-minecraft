@@ -2,7 +2,7 @@
 
 namespace gl
 {
-    class Texture
+    class Texture final
     {
     public:
         static std::shared_ptr<Texture> Load2DTexture(const std::string& path, int format = GL_RGB);

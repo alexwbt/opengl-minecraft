@@ -11,24 +11,26 @@ namespace glfw
         {
             glViewport(0, 0, width, height);
         }
+        virtual ~GlfwListener() {}
     };
 
     struct GlfwRenderHandler
     {
         virtual void Render() = 0;
+        virtual ~GlfwRenderHandler() {}
     };
 
-    struct Dimension
+    struct Dimension final
     {
         int width, height;
     };
 
-    struct Point
+    struct Point final
     {
         double x, y;
     };
 
-    class GlfwManager
+    class GlfwManager final
     {
     public:
         static constexpr uint64_t kNullIndex = -1;
@@ -69,5 +71,8 @@ namespace glfw
         static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
         static void MouseCallback(GLFWwindow* window, double x, double y);
         static void ResizeCallback(GLFWwindow* window, int width, int height);
+
+    private:
+        GlfwManager() {}
     };
 }

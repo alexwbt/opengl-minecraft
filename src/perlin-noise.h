@@ -2,7 +2,8 @@
 
 namespace util
 {
-    class PerlinNoise {
+    class PerlinNoise final
+    {
         // The permutation vector
         std::vector<int> p;
     public:

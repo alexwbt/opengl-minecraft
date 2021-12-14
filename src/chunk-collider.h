@@ -2,7 +2,7 @@
 
 namespace game
 {
-    struct BoxChunkCollider
+    struct BoxChunkCollider final
     {
         glm::vec3 n_bounds{ 0.3f, 1.8f, 0.3f };
         glm::vec3 p_bounds{ 0.3f, 0.1f, 0.3f };

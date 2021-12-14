@@ -8,18 +8,16 @@ namespace gl
 
     class ShaderProgram
     {
+    private:
+        static GLuint CreateShader(const char* code, GLenum type);
+
     public:
         struct Uniforms
         {
             virtual ~Uniforms() {}
         };
 
-        struct Vertex
-        {
-            virtual ~Vertex() {}
-        };
-
-        struct Shader
+        struct Shader final
         {
             GLenum type;
             std::string source;
@@ -48,8 +46,6 @@ namespace gl
         void SetMat2(const std::string& name, const glm::mat2& value) const;
         void SetMat3(const std::string& name, const glm::mat3& value) const;
         void SetMat4(const std::string& name, const glm::mat4& value) const;
-
-        void UseLight(std::shared_ptr<gl::Light> light, int i);
 
         void UseProgram();
     };

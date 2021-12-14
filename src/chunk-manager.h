@@ -19,9 +19,9 @@ namespace game
 
     static std::list<glm::vec3> chunk_load_order = GetLoadOrder();
 
-    class ChunkManager
+    class ChunkManager final
     {
-        struct KeyFuncs
+        struct KeyFuncs final
         {
             size_t operator()(const glm::vec3& k)const
             {
