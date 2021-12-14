@@ -2,7 +2,7 @@
 
 namespace game
 {
-    class Chunk : public Object
+    class Chunk : public Entity
     {
         static constexpr float kCube[] = {
             // Back face
@@ -78,7 +78,7 @@ namespace game
 
     public:
         Chunk(const std::weak_ptr<Game> game, const glm::vec3& coordinate, std::shared_ptr<util::ThreadPool> thread_pool)
-            : Object(game), coordinate_(coordinate), thread_pool_(std::move(thread_pool))
+            : Entity(game), coordinate_(coordinate), thread_pool_(std::move(thread_pool))
         {
             position_ = coordinate * (float)kSize;
         }

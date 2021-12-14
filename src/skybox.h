@@ -2,7 +2,7 @@
 
 namespace game
 {
-    class Skybox : public Object
+    class Skybox : public Entity
     {
         static constexpr int kSkyboxVerticesSize = 108;
         static constexpr float kSkyboxVertices[kSkyboxVerticesSize] = {
@@ -51,7 +51,7 @@ namespace game
 
     public:
         Skybox(const std::weak_ptr<Game>& game)
-            : Object(game)
+            : Entity(game)
         {
             std::vector<SkyboxShader::Vertex> vertices;
             vertices.reserve(kSkyboxVerticesSize / 3);

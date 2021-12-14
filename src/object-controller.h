@@ -2,7 +2,7 @@
 
 namespace game
 {
-    class EntityController final
+    class ObjectController final
     {
     public:
         enum Control
@@ -17,7 +17,7 @@ namespace game
     private:
         std::weak_ptr<Game> game_;
 
-        std::shared_ptr<Entity> entity_ = nullptr;
+        std::shared_ptr<Object> object_ = nullptr;
 
         bool holding_jump_ = false;
 
@@ -26,26 +26,26 @@ namespace game
         glm::vec3 looking_at_{ 0 };
 
     public:
-        EntityController(const std::weak_ptr<Game>& game) : game_(game) {}
+        ObjectController(const std::weak_ptr<Game>& game) : game_(game) {}
 
-        void SetEntity(std::shared_ptr<Entity> entity)
+        void SetObject(std::shared_ptr<Object> object)
         {
-            entity_ = std::move(entity);
+            object_ = std::move(object);
         }
 
         void Update(const gl::Camera& camera, const std::vector<bool>& controls)
         {
-            if (!entity_ || controls.size() < 5) return;
+            if (!object_ || controls.size() < 5) return;
 
-            if (controls[kForward]) entity_->Move(0.1f * camera.front_side);
-            if (controls[kBackward]) entity_->Move(-0.1f * camera.front_side);
-            if (controls[kLeft]) entity_->Move(0.1f * camera.right);
-            if (controls[kRight]) entity_->Move(-0.1f * camera.right);
+            if (controls[kForward]) object_->Move(0.1f * camera.front_side);
+            if (controls[kBackward]) object_->Move(-0.1f * camera.front_side);
+            if (controls[kLeft]) object_->Move(0.1f * camera.right);
+            if (controls[kRight]) object_->Move(-0.1f * camera.right);
 
             if (controls[kJump])
             {
-                if (!holding_jump_ && entity_->on_ground())
-                    entity_->Push(glm::vec3(0, 0.35f, 0) + entity_->movements() * 0.6f);
+                if (!holding_jump_ && object_->on_ground())
+                    object_->Push(glm::vec3(0, 0.35f, 0) + object_->movements() * 0.6f);
                 holding_jump_ = true;
             }
             else holding_jump_ = false;

@@ -7,9 +7,6 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{696f03f5-a62b-4821-bef3-026f04a3da00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Object">
-      <UniqueIdentifier>{5cfa7672-eb0c-49c5-8fd3-2bd92d9edd98}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GL">
       <UniqueIdentifier>{2c708764-ff5f-4419-a134-81332fb8f5e5}</UniqueIdentifier>
     </Filter>
@@ -23,10 +20,13 @@
       <UniqueIdentifier>{a9585936-b4b4-409a-b8fd-8be3e7c0a9cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Game\Entity">
-      <UniqueIdentifier>{26f13a82-66f9-4ddc-81e6-1062048609f6}</UniqueIdentifier>
+      <UniqueIdentifier>{5cfa7672-eb0c-49c5-8fd3-2bd92d9edd98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Object\Lightning">
-      <UniqueIdentifier>{936116ad-4ec2-43fd-895c-b23099640033}</UniqueIdentifier>
+    <Filter Include="Source Files\Game\Entity\Entities">
+      <UniqueIdentifier>{e977e0fc-2b92-47a8-9511-94b4edad02ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Object">
+      <UniqueIdentifier>{26f13a82-66f9-4ddc-81e6-1062048609f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,8 +83,8 @@
     <ClInclude Include="src\glfw-manager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\object.h">
-      <Filter>Source Files\Game\Object</Filter>
+    <ClInclude Include="src\entity.h">
+      <Filter>Source Files\Game\Entity</Filter>
     </ClInclude>
     <ClInclude Include="src\camera.h">
       <Filter>Source Files\GL</Filter>
@@ -110,9 +110,6 @@
     <ClInclude Include="src\skybox-shader.h">
       <Filter>Source Files\Game\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="src\skybox.h">
-      <Filter>Source Files\Game\Object</Filter>
-    </ClInclude>
     <ClInclude Include="src\perlin-noise.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
@@ -125,8 +122,8 @@
     <ClInclude Include="src\chunk-collider.h">
       <Filter>Source Files\Game\Chunk</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity.h">
-      <Filter>Source Files\Game\Entity</Filter>
+    <ClInclude Include="src\object.h">
+      <Filter>Source Files\Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\debug-render.h">
       <Filter>Source Files\Game</Filter>
@@ -137,20 +134,23 @@
     <ClInclude Include="src\thread-pool.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="src\entity-controller.h">
-      <Filter>Source Files\Game\Entity</Filter>
+    <ClInclude Include="src\object-controller.h">
+      <Filter>Source Files\Game\Object</Filter>
     </ClInclude>
     <ClInclude Include="src\ray.h">
       <Filter>Source Files\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lightning.h">
-      <Filter>Source Files\Game\Object\Lightning</Filter>
     </ClInclude>
     <ClInclude Include="src\math.h">
       <Filter>Source Files\Util</Filter>
     </ClInclude>
     <ClInclude Include="src\lightning-shader.h">
       <Filter>Source Files\Game\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\skybox.h">
+      <Filter>Source Files\Game\Entity\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lightning.h">
+      <Filter>Source Files\Game\Entity\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

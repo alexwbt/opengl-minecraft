@@ -4,7 +4,7 @@
 
 namespace game
 {
-    class Lightning : public Object
+    class Lightning : public Entity
     {
     private:
         std::vector<glm::vec3> init_points_;
@@ -26,7 +26,7 @@ namespace game
             float displacement, int subdivision,
             float branchRate, float branchRad, float branchLength
         ) :
-            Object(game),
+            Entity(game),
             init_points_(init_points),
             displacement_(displacement),
             subdivision_(subdivision),
@@ -71,7 +71,7 @@ namespace game
                 new_points.clear();
                 mid_points.clear();
             }
-            long a;
+
             std::vector<DebugShader::Vertex> vertices(points_.size());
             std::vector<uint32_t> indices(points_.size() * 2 - 2);
             for (int i = 0; i < points_.size(); ++i)

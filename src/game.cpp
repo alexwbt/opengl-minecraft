@@ -21,7 +21,7 @@ struct RenderInfo final
 #include "debug-render.h"
 
 // game
-#include "object.h"
+#include "entity.h"
 #include "skybox.h"
 #include "lightning.h"
 
@@ -31,8 +31,8 @@ struct RenderInfo final
 #include "chunk-manager.h"
 #include "chunk-collider.h"
 
-#include "entity.h"
-#include "entity-controller.h"
+#include "object.h"
+#include "object-controller.h"
 
 namespace game
 {
@@ -82,7 +82,7 @@ namespace game
 
         debug_render_ = std::make_shared<DebugRender>(std::make_shared<DebugShader>());
 
-        controller_ = std::make_shared<EntityController>(game_ref);
+        controller_ = std::make_shared<ObjectController>(game_ref);
 
         SetSkybox(std::make_shared<game::Skybox>(game_ref));
 
@@ -90,9 +90,9 @@ namespace game
         auto light = std::make_shared<gl::Light>(glm::vec3(0.2f, -1.0f, 1.2f), light_color);
         AddLight(light);
 
-        auto player = std::make_shared<Entity>(game_ref);
+        auto player = std::make_shared<Object>(game_ref);
         player->SetPosition({ 0, 32, 0 });
-        controller_->SetEntity(player);
+        controller_->SetObject(player);
         following_id_ = player->id();
         Spawn(player);
 
@@ -108,7 +108,7 @@ namespace game
     {
         chunk_manager_->Update(camera_.position);
         controller_->Update(camera_, controls);
-        for (auto& entity : objects_)
+        for (auto& entity : entities_)
         {
             entity->Update();
             if (entity->id() == following_id_)
@@ -132,7 +132,7 @@ namespace game
 
         chunk_manager_->Render(info);
 
-        for (auto& entity : objects_)
+        for (auto& entity : entities_)
             entity->Render(info);
 
         //debug_render_->DrawLine({ 0, 32, 0 }, { 16, 32, 0 }, { 1, 0, 0 });
@@ -146,9 +146,9 @@ namespace game
         lights_.push_back(std::move(light));
     }
 
-    void Game::Spawn(std::shared_ptr<Object> object)
+    void Game::Spawn(std::shared_ptr<Entity> entity)
     {
-        objects_.push_back(std::move(object));
+        entities_.push_back(std::move(entity));
     }
 
     void Game::SetSkybox(std::shared_ptr<Skybox> skybox)

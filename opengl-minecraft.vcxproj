@@ -120,10 +120,10 @@
     <ClCompile Include="src\thread-pool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\entity-controller.h" />
+    <ClInclude Include="src\object-controller.h" />
     <ClInclude Include="src\debug-render.h" />
     <ClInclude Include="src\debug-shader.h" />
-    <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\object.h" />
     <ClInclude Include="src\chunk-collider.h" />
     <ClInclude Include="src\chunk-manager.h" />
     <ClInclude Include="src\lightning-shader.h" />
@@ -140,7 +140,7 @@
     <ClInclude Include="src\glfw-manager.h" />
     <ClInclude Include="src\light.h" />
     <ClInclude Include="src\model.h" />
-    <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\skybox.h" />
